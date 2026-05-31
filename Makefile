@@ -10,13 +10,13 @@ backend-test:
 frontend-install:
 	@bash -lc 'NVM_DIR="$${NVM_DIR:-$$HOME/.nvm}"; \
 		[ -s "$$NVM_DIR/nvm.sh" ] && . "$$NVM_DIR/nvm.sh"; \
-		nvm use 20 >/dev/null 2>&1 || { echo "BLOCKED_NODE_VERSION: nvm use 20 failed -- install Node 20 via: nvm install 20"; exit 1; }; \
+		nvm use 22.22.3 >/dev/null 2>&1 || { echo "BLOCKED_NODE_VERSION: nvm use 22.22.3 failed -- install Node 22.22.3 via: nvm install 22.22.3"; exit 1; }; \
 		npm ci --prefix frontend'
 
 frontend-check:
 	@bash -lc 'NVM_DIR="$${NVM_DIR:-$$HOME/.nvm}"; \
 		[ -s "$$NVM_DIR/nvm.sh" ] && . "$$NVM_DIR/nvm.sh"; \
-		nvm use 20 >/dev/null 2>&1 || { echo "BLOCKED_NODE_VERSION: nvm use 20 failed -- install Node 20 via: nvm install 20"; exit 1; }; \
+		nvm use 22.22.3 >/dev/null 2>&1 || { echo "BLOCKED_NODE_VERSION: nvm use 22.22.3 failed -- install Node 22.22.3 via: nvm install 22.22.3"; exit 1; }; \
 		npm run lint --prefix frontend; \
 		npm run typecheck --prefix frontend; \
 		npm run build --prefix frontend'
@@ -24,13 +24,13 @@ frontend-check:
 frontend-build:
 	@bash -lc 'NVM_DIR="$${NVM_DIR:-$$HOME/.nvm}"; \
 		[ -s "$$NVM_DIR/nvm.sh" ] && . "$$NVM_DIR/nvm.sh"; \
-		nvm use 20 >/dev/null 2>&1 || { echo "BLOCKED_NODE_VERSION: nvm use 20 failed -- install Node 20 via: nvm install 20"; exit 1; }; \
+		nvm use 22.22.3 >/dev/null 2>&1 || { echo "BLOCKED_NODE_VERSION: nvm use 22.22.3 failed -- install Node 22.22.3 via: nvm install 22.22.3"; exit 1; }; \
 		npm run build --prefix frontend'
 
 frontend-typecheck:
 	@bash -lc 'NVM_DIR="$${NVM_DIR:-$$HOME/.nvm}"; \
 		[ -s "$$NVM_DIR/nvm.sh" ] && . "$$NVM_DIR/nvm.sh"; \
-		nvm use 20 >/dev/null 2>&1 || { echo "BLOCKED_NODE_VERSION: nvm use 20 failed -- install Node 20 via: nvm install 20"; exit 1; }; \
+		nvm use 22.22.3 >/dev/null 2>&1 || { echo "BLOCKED_NODE_VERSION: nvm use 22.22.3 failed -- install Node 22.22.3 via: nvm install 22.22.3"; exit 1; }; \
 		npm run typecheck --prefix frontend'
 
 bootstrap-backend:

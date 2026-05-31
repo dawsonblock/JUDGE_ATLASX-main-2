@@ -151,8 +151,8 @@ def smoke_runtime_checks() -> list[Check]:
                 (
                     'NVM_DIR="${NVM_DIR:-$HOME/.nvm}"; '
                     '[ -s "$NVM_DIR/nvm.sh" ] && . "$NVM_DIR/nvm.sh"; '
-                    "nvm use 20 >/dev/null 2>&1 || "
-                    "{ echo 'BLOCKED_NODE_VERSION: nvm use 20 failed -- install Node 20 via: nvm install 20'; exit 1; }; "
+                    "nvm use 22.22.3 >/dev/null 2>&1 || "
+                    "{ echo 'BLOCKED_NODE_VERSION: nvm use 22.22.3 failed -- install Node 22.22.3 via: nvm install 22.22.3'; exit 1; }; "
                     "python3 scripts/check_frontend_node_gate.py"
                 ),
             ],

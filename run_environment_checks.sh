@@ -14,8 +14,8 @@ if command -v pyenv 1>/dev/null 2>&1; then
   eval "$(pyenv init -)"
 fi
 
-echo "Setting Node version to 20.20.2..."
-nvm use 20.20.2 || nvm install 20.20.2
+echo "Setting Node version to 22.22.3..."
+nvm use 22.22.3 || nvm install 22.22.3
 
 echo "Setting Python version to 3.11.9..."
 pyenv shell 3.11.9 || pyenv install 3.11.9

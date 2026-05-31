@@ -84,16 +84,16 @@ def check_environment(root: Path) -> tuple[list[CheckResult], bool]:
         )
     )
 
-    # Node 20.x
+    # Node 22.x
     node_rc, node_output = _run_cmd(["node", "--version"])
     node_ver = _parse_semver(node_output) if node_rc == 0 else None
-    node_ok = bool(node_ver and node_ver[0] == 20)
+    node_ok = bool(node_ver and node_ver[0] == 22)
     results.append(
         CheckResult(
             name="node_version",
             status="PASS" if node_ok else "FAIL",
             detail=(
-                f"Node {node_output} detected; requires 20.x"
+                f"Node {node_output} detected; requires 22.x"
                 if node_rc == 0
                 else "Node unavailable"
             ),

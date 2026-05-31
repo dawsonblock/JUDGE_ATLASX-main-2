@@ -1408,7 +1408,7 @@ def _write_repair_report_md(
             "artifacts/proof/current/public_api_boundary.log",
         ),
         (
-            "12. Frontend Node 20 Gate",
+            "12. Frontend Node 22 Gate",
             phase_status(
                 checks.get("frontend_node_gate", {}).get("status") == "PASS"
             ),
@@ -2343,8 +2343,8 @@ def main() -> int:
                 "-lc",
                 (
                     'NVM_DIR="${NVM_DIR:-$HOME/.nvm}"; [ -s "$NVM_DIR/nvm.sh" ] && . "$NVM_DIR/nvm.sh";'
-                    " nvm use 20 >/dev/null 2>&1"
-                    " || { echo 'BLOCKED_NODE_VERSION: nvm use 20 failed -- install Node 20 via: nvm install 20'; exit 1; };"
+                    " nvm use 22.22.3 >/dev/null 2>&1"
+                    " || { echo 'BLOCKED_NODE_VERSION: nvm use 22.22.3 failed -- install Node 22 via: nvm install 22'; exit 1; };"
                     f' "{python_exe}" scripts/check_node_policy.py --root "{repo_root}"'
                 ),
             ],
@@ -2357,9 +2357,9 @@ def main() -> int:
                 "-lc",
                 (
                     'NVM_DIR="${NVM_DIR:-$HOME/.nvm}"; [ -s "$NVM_DIR/nvm.sh" ] && . "$NVM_DIR/nvm.sh";'
-                    " nvm use 20 >/dev/null 2>&1"
-                    " || { echo 'BLOCKED_NODE_VERSION: nvm use 20 failed -- install Node 20 via: nvm install 20'; exit 1; };"
-                    f' "{python_exe}" scripts/check_frontend_node_gate.py --expected-major 20'
+                    " nvm use 22.22.3 >/dev/null 2>&1"
+                    " || { echo 'BLOCKED_NODE_VERSION: nvm use 22.22.3 failed -- install Node 22 via: nvm install 22'; exit 1; };"
+                    f' "{python_exe}" scripts/check_frontend_node_gate.py --expected-major 22'
                 ),
             ],
         ),
@@ -2371,8 +2371,8 @@ def main() -> int:
                 "-lc",
                 (
                     'NVM_DIR="${NVM_DIR:-$HOME/.nvm}"; [ -s "$NVM_DIR/nvm.sh" ] && . "$NVM_DIR/nvm.sh";'
-                    " nvm use 20 >/dev/null 2>&1"
-                    " || { echo 'BLOCKED_NODE_VERSION: nvm use 20 failed -- install Node 20 via: nvm install 20'; exit 1; };"
+                    " nvm use 22.22.3 >/dev/null 2>&1"
+                    " || { echo 'BLOCKED_NODE_VERSION: nvm use 22.22.3 failed -- install Node 22 via: nvm install 22'; exit 1; };"
                     " npm ci --prefix frontend"
                 ),
             ],
@@ -2386,8 +2386,8 @@ def main() -> int:
                 "-lc",
                 (
                     'NVM_DIR="${NVM_DIR:-$HOME/.nvm}"; [ -s "$NVM_DIR/nvm.sh" ] && . "$NVM_DIR/nvm.sh";'
-                    " nvm use 20 >/dev/null 2>&1"
-                    " || { echo 'BLOCKED_NODE_VERSION: nvm use 20 failed -- install Node 20 via: nvm install 20'; exit 1; };"
+                    " nvm use 22.22.3 >/dev/null 2>&1"
+                    " || { echo 'BLOCKED_NODE_VERSION: nvm use 22.22.3 failed -- install Node 22 via: nvm install 22'; exit 1; };"
                     " npm run lint --prefix frontend"
                 ),
             ],
@@ -2400,8 +2400,8 @@ def main() -> int:
                 "-lc",
                 (
                     'NVM_DIR="${NVM_DIR:-$HOME/.nvm}"; [ -s "$NVM_DIR/nvm.sh" ] && . "$NVM_DIR/nvm.sh";'
-                    " nvm use 20 >/dev/null 2>&1"
-                    " || { echo 'BLOCKED_NODE_VERSION: nvm use 20 failed -- install Node 20 via: nvm install 20'; exit 1; };"
+                    " nvm use 22.22.3 >/dev/null 2>&1"
+                    " || { echo 'BLOCKED_NODE_VERSION: nvm use 22.22.3 failed -- install Node 22 via: nvm install 22'; exit 1; };"
                     " npm run typecheck --prefix frontend"
                 ),
             ],
@@ -2414,8 +2414,8 @@ def main() -> int:
                 "-lc",
                 (
                     'NVM_DIR="${NVM_DIR:-$HOME/.nvm}"; [ -s "$NVM_DIR/nvm.sh" ] && . "$NVM_DIR/nvm.sh";'
-                    " nvm use 20 >/dev/null 2>&1"
-                    " || { echo 'BLOCKED_NODE_VERSION: nvm use 20 failed -- install Node 20 via: nvm install 20'; exit 1; };"
+                    " nvm use 22.22.3 >/dev/null 2>&1"
+                    " || { echo 'BLOCKED_NODE_VERSION: nvm use 22.22.3 failed -- install Node 22 via: nvm install 22'; exit 1; };"
                     " npm run test:contracts --prefix frontend"
                 ),
             ],
@@ -2428,8 +2428,8 @@ def main() -> int:
                 "-lc",
                 (
                     'NVM_DIR="${NVM_DIR:-$HOME/.nvm}"; [ -s "$NVM_DIR/nvm.sh" ] && . "$NVM_DIR/nvm.sh";'
-                    " nvm use 20 >/dev/null 2>&1"
-                    " || { echo 'BLOCKED_NODE_VERSION: nvm use 20 failed -- install Node 20 via: nvm install 20'; exit 1; };"
+                    " nvm use 22.22.3 >/dev/null 2>&1"
+                    " || { echo 'BLOCKED_NODE_VERSION: nvm use 22.22.3 failed -- install Node 22 via: nvm install 22'; exit 1; };"
                     " npm run build --prefix frontend"
                 ),
             ],

@@ -53,7 +53,7 @@ def main() -> int:
     parser.add_argument(
         "--expected-node-major",
         type=int,
-        default=20,
+        default=22,
         help="Expected Node major version",
     )
     args = parser.parse_args()
