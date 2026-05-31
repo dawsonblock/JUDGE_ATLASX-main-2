@@ -127,7 +127,7 @@ proof:
 release-proof:
 	@python3 scripts/check_toolchain_versions.py --root .
 	@python3 scripts/check_node_policy.py
-	@python3 scripts/check_frontend_node_gate.py --expected-major 20
+	@python3 scripts/check_frontend_node_gate.py --expected-major 22
 	@python3 scripts/check_false_claims.py
 	@python3 scripts/check_status_truth_consistency.py --root .
 	@python3 scripts/check_api_contracts.py
