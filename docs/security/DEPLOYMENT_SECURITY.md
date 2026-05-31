@@ -151,7 +151,7 @@ This is a defense-in-depth measure: even if a request bypasses the UI, the backe
 
 ### Current
 
-- Dockerfile with node:20-slim and python:3.11-slim
+- Dockerfile with node:22-bookworm-slim and python:3.11-slim
 - Non-root user in frontend container
 
 ### Production Requirements

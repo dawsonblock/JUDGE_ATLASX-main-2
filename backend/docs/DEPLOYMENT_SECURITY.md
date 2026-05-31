@@ -146,7 +146,7 @@ JTA_TRUSTED_PROXY_IPS=10.0.0.1,10.0.0.2
 
 ### Current
 
-- Dockerfile with node:20-slim and python:3.11-slim
+- Dockerfile with node:22-bookworm-slim and python:3.11-slim
 - Non-root user in frontend container
 
 ### Production Requirements
