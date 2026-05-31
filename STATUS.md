@@ -21,8 +21,8 @@ This repository is an alpha/research-grade platform, not a production legal syst
 - **Release readiness**: `artifacts/proof/current/release_readiness.md`
 - **Machine truth**: `artifacts/proof/current/release_gate.json`
 - **Alpha posture summary**: `artifacts/proof/current/CURRENT_ALPHA_STATUS.md`
-- node_version: v20.20.2
-- npm_version: 10.8.2
+- node_version: v22.22.3
+- npm_version: 10.9.8
 
 ## Current State
 

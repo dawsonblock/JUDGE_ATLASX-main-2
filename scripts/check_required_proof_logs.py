@@ -250,11 +250,13 @@ def check_required_proof_logs(
         packaged_archive=packaged_archive,
     )
     missing, _empty_logs, _stale_logs, referenced_total, present_total = result
-    # Also check for 0 referenced logs
     false_exists_required_index = _required_log_index_false_exists(repo_root)
-    if referenced_total == 0 or false_exists_required_index:
-        # Return all known required logs as missing when 0 referenced
+    # When there are no referenced logs at all, the proof is incomplete:
+    # return all known required logs as missing.
+    if referenced_total == 0:
         missing = list(DEFAULT_REQUIRED_PROOF_LOGS)
+    # Add any entries from required_log_index.json that falsely claim to exist.
+    missing.extend(false_exists_required_index)
     return missing, referenced_total, present_total
 
 

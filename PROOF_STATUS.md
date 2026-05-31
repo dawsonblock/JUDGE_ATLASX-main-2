@@ -18,8 +18,8 @@
 ## Runtime Environment
 
 - **Python version**: 3.11.9
-- **Node version**: v20.20.2
-- **npm version**: 10.8.2
+- **Node version**: v22.22.3
+- **npm version**: 10.9.8
 - **Platform**: macOS-26.2-arm64
 - **Database**: SQLite (test), PostgreSQL (PostGIS proof)
 - **Docker**: See canonical proof logs for the current run state.

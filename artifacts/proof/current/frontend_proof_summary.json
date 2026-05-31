@@ -1,0 +1,72 @@
+{
+  "group": "frontend_proof",
+  "status": "PASS",
+  "checks": [
+    {
+      "name": "frontend_node_gate",
+      "status": "PASS",
+      "log": "artifacts/proof/current/frontend_node_gate.log",
+      "exit_code": 0
+    },
+    {
+      "name": "frontend_install",
+      "status": "PASS",
+      "log": "artifacts/proof/current/frontend_install.log",
+      "exit_code": 0
+    },
+    {
+      "name": "frontend_lint",
+      "status": "PASS",
+      "log": "artifacts/proof/current/frontend_lint.log",
+      "exit_code": 0
+    },
+    {
+      "name": "frontend_typecheck",
+      "status": "PASS",
+      "log": "artifacts/proof/current/frontend_typecheck.log",
+      "exit_code": 0
+    },
+    {
+      "name": "frontend_contracts",
+      "status": "PASS",
+      "log": "artifacts/proof/current/frontend_contracts.log",
+      "exit_code": 0
+    },
+    {
+      "name": "frontend_build",
+      "status": "PASS",
+      "log": "artifacts/proof/current/frontend_build.log",
+      "exit_code": 0
+    },
+    {
+      "name": "check_api_contracts",
+      "status": "PASS",
+      "log": "artifacts/proof/current/check_api_contracts.log",
+      "exit_code": 0
+    },
+    {
+      "name": "frontend_backend_route_contract",
+      "status": "PASS",
+      "log": "artifacts/proof/current/frontend_backend_route_contract.log",
+      "exit_code": 0
+    },
+    {
+      "name": "map_route_check",
+      "status": "PASS",
+      "log": "artifacts/proof/current/map_route_check.log",
+      "exit_code": 0
+    },
+    {
+      "name": "public_api_boundary",
+      "status": "PASS",
+      "log": "artifacts/proof/current/public_api_boundary.log",
+      "exit_code": 0
+    },
+    {
+      "name": "check_node_policy",
+      "status": "PASS",
+      "log": "artifacts/proof/current/check_node_policy.log",
+      "exit_code": 0
+    }
+  ]
+}
