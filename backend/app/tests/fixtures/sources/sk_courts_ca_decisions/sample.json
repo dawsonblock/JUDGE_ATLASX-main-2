@@ -1,0 +1,23 @@
+{
+  "resultCount": 2,
+  "cases": [
+    {
+      "title": "R v Example CA 1",
+      "url": "https://www.canlii.org/en/sk/skca/doc/2026/2026skca1/2026skca1.html",
+      "decisionDate": "2026-02-01",
+      "citation": "2026 SKCA 1",
+      "caseId": {
+        "en": "2026skca1"
+      }
+    },
+    {
+      "title": "R v Example CA 2",
+      "url": "https://www.canlii.org/en/sk/skca/doc/2026/2026skca2/2026skca2.html",
+      "decisionDate": "2026-02-02",
+      "citation": "2026 SKCA 2",
+      "caseId": {
+        "en": "2026skca2"
+      }
+    }
+  ]
+}

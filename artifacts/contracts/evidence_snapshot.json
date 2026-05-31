@@ -1,0 +1,14 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "EvidenceSnapshotResponse",
+  "type": "object",
+  "required": ["id", "content_hash"],
+  "properties": {
+    "id": { "type": "integer" },
+    "content_hash": { "type": "string", "minLength": 64, "maxLength": 64 },
+    "source_url": { "type": ["string", "null"], "format": "uri" },
+    "fetched_at": { "type": ["string", "null"], "format": "date-time" },
+    "is_truncated": { "type": "boolean" }
+  }
+}
+

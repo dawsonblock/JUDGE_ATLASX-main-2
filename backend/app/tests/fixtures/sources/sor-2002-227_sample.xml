@@ -1,0 +1,23 @@
+<?xml version="1.0"?>
+<Statute xmlns:lims="http://justice.gc.ca/lims" lims:id="200227" lims:current-date="2026-01-10" lims:lastAmendedDate="2025-12-01">
+    <Identification>
+        <LongTitle>Food and Drug Regulations</LongTitle>
+        <ShortTitle>Food and Drug Regulations</ShortTitle>
+        <InstrumentNumber>SOR/2002-227</InstrumentNumber>
+    </Identification>
+    <Body>
+        <Section lims:id="r-1">
+            <MarginalNote>Application</MarginalNote>
+            <Label>1</Label>
+            <Text>These Regulations apply to <DefinedTerm>food</DefinedTerm> and drugs.</Text>
+        </Section>
+        <Section lims:id="r-2">
+            <MarginalNote>Interpretation</MarginalNote>
+            <Label>2</Label>
+            <Subsection lims:id="r-2-1">
+                <Label>(1)</Label>
+                <Text>"label" includes any <Emphasis>legend</Emphasis> on a package.</Text>
+            </Subsection>
+        </Section>
+    </Body>
+</Statute>

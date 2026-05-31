@@ -1,0 +1,163 @@
+name: Alpha Release Proof
+
+on:
+  push:
+    branches:
+      - main
+  pull_request:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  alpha-release-proof:
+    runs-on: ubuntu-latest
+    timeout-minutes: 90
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: "20"
+          cache: npm
+          cache-dependency-path: ./frontend/package-lock.json
+
+      - name: Prepare backend virtual environment
+        working-directory: ./backend
+        run: |
+          python -m venv .venv
+          source .venv/bin/activate
+          python -m pip install --upgrade pip
+          python -m pip install -e ".[test]"
+
+      - name: Install frontend dependencies
+        working-directory: ./frontend
+        run: npm ci
+
+      - name: Verify Docker availability
+        run: |
+          docker version
+          docker info
+
+      - name: Check release naming drift
+        run: python3 scripts/check_release_naming_drift.py
+
+      - name: Run full alpha release proof gate (Docker/PostGIS required)
+        run: |
+          bash scripts/package_and_validate_release_archive.sh \
+            --archive-path "dist/JUDGE_ATLAS-main-final.zip"
+
+      - name: Assert authoritative release archive and checksum
+        run: |
+          test -f dist/JUDGE_ATLAS-main-final.zip
+          test -f dist/JUDGE_ATLAS-main-final.zip.sha256
+          test -f FINAL_RELEASE_HANDOFF.md
+          python scripts/validate_release_archive.py \
+            --archive dist/JUDGE_ATLAS-main-final.zip \
+            --expected-root JUDGE_ATLAS-main
+          python scripts/validate_final_zip.py dist/JUDGE_ATLAS-main-final.zip
+
+      - name: Upload current proof artifacts
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: alpha-release-proof-current
+          path: artifacts/proof/current/**
+          retention-days: 30
+
+      - name: Upload final distributable archive
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: JUDGE_ATLAS-main-final
+          path: dist/JUDGE_ATLAS-main-final.zip
+          retention-days: 30
+
+      - name: Upload final distributable checksum
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: JUDGE_ATLAS-main-final-sha256
+          path: dist/JUDGE_ATLAS-main-final.zip.sha256
+          retention-days: 30
+
+      - name: Upload authoritative handoff
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: JUDGE_ATLAS-main-final-handoff
+          path: FINAL_RELEASE_HANDOFF.md
+          retention-days: 30
+
+  fresh-extract-proof:
+    name: Fresh Extract Proof
+    needs: alpha-release-proof
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Download release archive
+        uses: actions/download-artifact@v4
+        with:
+          name: JUDGE_ATLAS-main-final
+          path: dist/
+
+      - name: Assert downloaded canonical archive name
+        run: |
+          shopt -s nullglob
+          archives=(dist/*.zip)
+          test "${#archives[@]}" -eq 1
+          test "${archives[0]}" = "dist/JUDGE_ATLAS-main-final.zip"
+
+      - name: Download release checksum
+        uses: actions/download-artifact@v4
+        with:
+          name: JUDGE_ATLAS-main-final-sha256
+          path: dist/
+
+      - name: Download authoritative handoff
+        uses: actions/download-artifact@v4
+        with:
+          name: JUDGE_ATLAS-main-final-handoff
+          path: ./
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+
+      - name: Install backend deps
+        working-directory: ./backend
+        run: |
+          python -m venv .venv
+          source .venv/bin/activate
+          python -m pip install --upgrade pip
+          python -m pip install -e ".[test]"
+
+      - name: Validate extracted release (full checks)
+        run: |
+          python scripts/validate_extracted_release.py \
+            --archive dist/JUDGE_ATLAS-main-final.zip \
+            --expected-root JUDGE_ATLAS-main
+
+      - name: Upload final-release-distributable
+        uses: actions/upload-artifact@v4
+        with:
+          name: final-release-distributable
+          path: |
+            dist/JUDGE_ATLAS-main-final.zip
+            dist/JUDGE_ATLAS-main-final.zip.sha256
+            FINAL_RELEASE_HANDOFF.md
+          retention-days: 90

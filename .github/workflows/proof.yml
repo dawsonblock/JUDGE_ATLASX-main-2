@@ -1,0 +1,202 @@
+name: Authoritative Proof Bundle
+
+on:
+  push:
+    branches:
+      - main
+  pull_request:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  authoritative-proof:
+    runs-on: ubuntu-latest
+    timeout-minutes: 60
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: "20"
+          cache: "npm"
+          cache-dependency-path: ./frontend/package-lock.json
+
+      - name: Prepare backend virtual environment
+        working-directory: ./backend
+        run: |
+          python -m venv .venv
+          source .venv/bin/activate
+          python -m pip install --upgrade pip
+          python -m pip install -e ".[test]"
+
+      - name: Install frontend dependencies
+        working-directory: ./frontend
+        run: npm ci
+
+      - name: Run static boundary checks
+        run: make proof-static
+
+      - name: Run truth checks
+        run: make truth-check
+
+      - name: Run check-generated
+        run: make check-generated
+
+      - name: Check release naming drift
+        run: python3 scripts/check_release_naming_drift.py
+
+      - name: Run backend tests (Phase 3-11)
+        working-directory: ./backend
+        run: |
+          source .venv/bin/activate
+          python -m pytest -q \
+            app/tests/test_postgres_queue_locking.py \
+            app/tests/test_postgres_queue_idempotency.py \
+            app/tests/test_postgres_queue_dead_letter.py \
+            app/tests/test_postgres_queue_stale_recovery.py \
+            app/tests/test_named_person_publication_policy.py \
+            app/tests/test_contradiction_intelligence.py \
+            app/tests/test_claim_to_graph.py \
+            app/tests/test_e2e_source_to_public_api.py \
+            app/tests/test_public_api_safety.py \
+            app/tests/test_ingestion_result_gate.py \
+            app/tests/test_machine_ingest_publication_block.py \
+            app/tests/test_source_registry_contracts.py \
+            app/tests/test_snapshot_integrity.py \
+            app/tests/test_jwt_mutation_enforcement.py \
+            app/tests/test_mutation_rbac_matrix.py \
+            app/tests/test_review_gates.py \
+            app/tests/test_evidence_required_for_publish.py \
+            app/tests/test_ai_review_requires_reviewer_or_source_admin.py
+
+      - name: Run frontend typecheck
+        working-directory: ./frontend
+        run: npm run typecheck
+
+      - name: Run frontend doctor
+        working-directory: ./frontend
+        run: node scripts/doctor.mjs
+
+      - name: Run frontend build
+        working-directory: ./frontend
+        run: npm run build
+
+      - name: Run authoritative proof bundle generation
+        run: |
+          source backend/.venv/bin/activate
+          make proof
+
+      - name: Upload proof bundle artifacts
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: authoritative-proof-bundle
+          path: artifacts/proof/current/**
+          retention-days: 90
+
+      - name: Upload backend test results
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: backend-test-results
+          path: backend/.pytest_cache/**
+          retention-days: 30
+
+  release-gate:
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    needs: authoritative-proof
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+
+      - name: Prepare backend virtual environment
+        working-directory: ./backend
+        run: |
+          python -m venv .venv
+          source .venv/bin/activate
+          python -m pip install --upgrade pip
+          python -m pip install -e ".[test]"
+
+      - name: Run release gate
+        run: |
+          source backend/.venv/bin/activate
+          python3 scripts/release_gate.py
+
+      - name: Check proof manifest required logs
+        run: |
+          source backend/.venv/bin/activate
+          python scripts/check_proof_manifest.py
+
+      - name: Check required proof logs (strict)
+        run: |
+          source backend/.venv/bin/activate
+          python scripts/check_required_proof_logs.py --root . --strict-required-files
+
+      - name: Check proof consistency
+        run: |
+          source backend/.venv/bin/activate
+          python scripts/check_proof_consistency.py
+
+      - name: Check single proof authority
+        run: |
+          source backend/.venv/bin/activate
+          python scripts/check_single_proof_authority.py
+
+      - name: Verify status consistency
+        run: |
+          source backend/.venv/bin/activate
+          python scripts/verify_status_consistency.py
+
+      - name: Check status truth consistency
+        run: |
+          source backend/.venv/bin/activate
+          python scripts/check_status_truth_consistency.py --root .
+
+      - name: Check duplicate docs
+        run: |
+          source backend/.venv/bin/activate
+          python scripts/check_duplicate_docs.py
+
+      - name: Check release naming drift
+        run: |
+          source backend/.venv/bin/activate
+          python scripts/check_release_naming_drift.py
+
+      - name: Upload release gate artifacts
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: release-gate-artifacts
+          path: artifacts/proof/current/**
+          retention-days: 90
+
+  proof-failure-check:
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    needs: [authoritative-proof, release-gate]
+    if: failure()
+
+    steps:
+      - name: Check proof bundle
+        run: |
+          echo "=== PROOF BUNDLE GENERATION FAILED ==="
+          echo "One or more proof jobs failed."
+          echo "Please check the job logs for details."
+          exit 1

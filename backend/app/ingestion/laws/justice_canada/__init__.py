@@ -1,0 +1,1 @@
+"""Justice Canada law source."""

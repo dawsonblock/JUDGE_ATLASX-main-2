@@ -1,0 +1,87 @@
+.env
+.env.*
+!.env.example
+!*.env.example
+__pycache__/
+*.py[cod]
+*.pyo
+.pytest_cache/
+.ruff_cache/
+.mypy_cache/
+.validation_logs/
+*.db
+*.sqlite
+*.sqlite3
+*.dump
+.venv/
+backend/.venv/
+venv/
+node_modules/
+frontend/.next/
+frontend/out/
+frontend/dist/
+.next/
+out/
+dist/
+build/
+release/
+coverage/
+.coverage
+*.tsbuildinfo
+.DS_Store
+*.egg-info/
+/backend/judgetracker_atlas_backend.egg-info/
+*.log
+*.pem
+*.key
+*.p12
+*.pfx
+evidence_store/
+data/local/
+artifacts/history/
+artifacts/proof/backend/
+artifacts/proof/frontend/
+artifacts/proof/history/
+artifacts/proof/latest/
+proof/latest/
+artifacts/proof/current/*.log
+*.zip
+*.tar
+*.tar.gz
+
+# Release archives — produced by make build-clean-release; never commit
+JUDGE_ATLASX-*.zip
+judge_atlas_*.zip
+
+# Proof-generated artifacts — produced by make proof; never commit
+REPAIR_REPORT.md
+*_PROOF.md
+*_PROOF_*.md
+!CURRENT_PROOF.md
+!artifacts/proof/current/CURRENT_PROOF.md
+
+# ---- Non-shipping / reference trees (HARD-ENFORCED) -------------------------
+# These directories MUST NOT be tracked, committed, or shipped.
+# They contain third-party research repos, vendored deps, or dev tooling.
+# None of these must contain runtime product code or secrets.
+research/
+external/
+external_reference/
+Research /
+Research/
+external_reference/
+docs/reference/archived/
+docs/reference/vendor_repos/
+docs/reference/experiments/
+
+# Exclude any local builds that may be produced inside research subtrees
+research/**/__pycache__/
+research/**/.pytest_cache/
+research/**/.mypy_cache/
+research/**/.ruff_cache/
+research/**/*.py[cod]
+research/**/node_modules/
+research/**/.next/
+external/**/__pycache__/
+external/**/*.py[cod]
+external/**/node_modules/

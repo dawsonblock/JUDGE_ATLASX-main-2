@@ -1,0 +1,38 @@
+[
+  {
+    "review_key": "DEMO-REV-001",
+    "source_snapshot_key": "DEMO-SNAP-001",
+    "record_type": "event",
+    "source_url": "https://demo.local/court/DEMO-2025-CR-0001/order",
+    "source_quality": "court_record",
+    "confidence": 0.96,
+    "privacy_status": "public_safe",
+    "publish_recommendation": "safe_auto_publish",
+    "public_visibility": true,
+    "status": "approved",
+    "reviewer_id": "demo-reviewer",
+    "reviewer_notes": "Synthetic fixture approved for public demo visibility.",
+    "suggested_payload_json": {
+      "event_id": "DEMO-EVT-PUBLIC-001",
+      "review_status": "verified_court_record"
+    }
+  },
+  {
+    "review_key": "DEMO-REV-002",
+    "source_snapshot_key": "DEMO-SNAP-002",
+    "record_type": "event",
+    "source_url": "https://demo.local/court/DEMO-2025-CR-0002/motion",
+    "source_quality": "court_record",
+    "confidence": 0.71,
+    "privacy_status": "restricted",
+    "publish_recommendation": "review_required",
+    "public_visibility": false,
+    "status": "pending",
+    "reviewer_id": null,
+    "reviewer_notes": "Synthetic fixture remains pending review to demonstrate private hiding.",
+    "suggested_payload_json": {
+      "event_id": "DEMO-EVT-PRIVATE-001",
+      "review_status": "pending_review"
+    }
+  }
+]

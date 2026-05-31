@@ -1,0 +1,10 @@
+node_modules
+.next
+coverage
+dist
+.nyc_output
+*.log
+.env
+.env.*
+.vscode
+.DS_Store

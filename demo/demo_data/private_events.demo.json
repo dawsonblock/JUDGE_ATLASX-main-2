@@ -1,0 +1,20 @@
+[
+  {
+    "event_id": "DEMO-EVT-PRIVATE-001",
+    "event_type": "detention_order",
+    "title": "DEMO Detention Motion Pending Review",
+    "summary": "Synthetic unreviewed event used to demonstrate private/unreviewed hiding behavior.",
+    "decision_result": "pending",
+    "decision_date": "2025-01-20",
+    "posted_date": "2025-01-21",
+    "review_status": "pending_review",
+    "public_visibility": false,
+    "verified_flag": false,
+    "source_quality": "court_record",
+    "docket_number": "DEMO-2025-CR-0002",
+    "caption": "DEMO United States v. Sample Two",
+    "judge_name": "DEMO Judge Rowan Hale",
+    "defendant_anonymized_id": "DEMO-DEF-0002",
+    "defendant_public_name": "Demo Person B"
+  }
+]

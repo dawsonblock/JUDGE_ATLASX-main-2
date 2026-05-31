@@ -1,0 +1,71 @@
+name: PostgreSQL Gate
+
+on:
+    push:
+        branches:
+            - main
+            - master
+    pull_request:
+        branches:
+            - main
+            - master
+
+permissions:
+    contents: read
+
+jobs:
+    postgres-gate:
+        runs-on: ubuntu-latest
+
+        services:
+            postgres:
+                image: postgis/postgis:16-3.4
+                env:
+                    POSTGRES_USER: postgres
+                    POSTGRES_PASSWORD: test
+                    POSTGRES_DB: jta_test
+                ports:
+                    - 5432:5432
+                options: >-
+                    --health-cmd "pg_isready -U postgres" --health-interval 10s
+                    --health-timeout 5s --health-retries 5
+
+        steps:
+            - name: Checkout
+              uses: actions/checkout@v4
+
+            - name: Set up Python
+              uses: actions/setup-python@v5
+              with:
+                  python-version: "3.11"
+
+            - name: Install uv
+              uses: astral-sh/setup-uv@v4
+              with:
+                  version: "latest"
+
+            - name: Install backend dependencies
+              working-directory: ./backend
+              run: |
+                  uv venv
+                  source .venv/bin/activate
+                  uv pip install -e ".[test]"
+
+            - name: Run Alembic migrations against PostgreSQL
+              working-directory: ./backend
+              env:
+                  JTA_DATABASE_URL: postgresql+psycopg://postgres:test@localhost:5432/jta_test
+              run: |
+                  source .venv/bin/activate
+                  python -m alembic upgrade head
+
+            - name: Run tests against PostgreSQL
+              working-directory: ./backend
+              env:
+                  JTA_DATABASE_URL: postgresql+psycopg://postgres:test@localhost:5432/jta_test
+                  JTA_APP_ENV: test
+                  JTA_ADMIN_TOKEN: test-admin-token-ci
+                  JTA_ADMIN_REVIEW_TOKEN: test-review-token-ci
+              run: |
+                  source .venv/bin/activate
+                  python -m pytest -q

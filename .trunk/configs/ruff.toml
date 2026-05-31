@@ -1,0 +1,8 @@
+# Aligned with backend/pyproject.toml [tool.ruff.lint]
+select = ["E", "F", "W", "I", "B", "S", "UP", "PL"]
+
+# Match project line length (backend/pyproject.toml [tool.ruff])
+line-length = 100
+
+# Never enforce `E501` (line length violations). Handled by black.
+ignore = ["E501"]

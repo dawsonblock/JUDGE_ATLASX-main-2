@@ -1,0 +1,22 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "PublicMapMarkersResponse",
+  "type": "object",
+  "required": ["items"],
+  "properties": {
+    "items": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": ["entity_id", "lat", "lon"],
+        "properties": {
+          "entity_id": { "type": "string" },
+          "lat": { "type": "number" },
+          "lon": { "type": "number" },
+          "label": { "type": "string" }
+        }
+      }
+    }
+  }
+}
+

@@ -1,0 +1,14 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "PublicEntityDetailResponse",
+  "type": "object",
+  "required": ["entity_id", "review_status", "public_visibility"],
+  "properties": {
+    "entity_id": { "type": "string" },
+    "review_status": { "type": "string", "enum": ["approved", "pending", "rejected"] },
+    "public_visibility": { "type": "boolean" },
+    "summary": { "type": ["string", "null"] },
+    "source_key": { "type": ["string", "null"] }
+  }
+}
+

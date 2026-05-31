@@ -1,0 +1,11 @@
+source_name,source_type,feed_url,data_format,precision_level,auto_publish_tier,attribution,last_verified
+chicago_data_portal,local_police,https://data.cityofchicago.org/resource/ijzp-q8t2.csv,CSV,community_area_centroid,auto,Chicago Data Portal — City of Chicago,2025-01-01
+toronto_police,local_police,https://data.torontopolice.on.ca/datasets/major-crime-indicators-open-data,CSV,neighbourhood_centroid,auto,Toronto Police Service Public Safety Data Portal,2025-01-01
+saskatoon_police,local_police,https://www.saskatoonpolice.ca/crime-map,CSV,city_centroid,auto,Saskatoon Police Service,2025-01-01
+los_angeles_open_data,local_police,https://data.lacity.org/resource/2nrs-mtv8.csv,CSV,district_centroid,auto,Los Angeles Open Data — LAPD,2025-01-01
+statistics_canada,aggregate_stats,https://www150.statcan.gc.ca/t1/tbl1/en/dtbl/35100177,CSV,province_centroid,auto,Statistics Canada Table 35-10-0177-01 — CC BY 4.0,2025-01-01
+fbi_crime_data,aggregate_stats,https://api.usa.gov/crime/fbi/cde,JSON,district_centroid,auto,FBI Crime Data Explorer — US DOJ,2025-01-01
+nypd_open_data,local_police,https://data.cityofnewyork.us/resource/5uac-w243.csv,CSV,police_beat_centroid,hold,NYC Open Data — NYPD Complaint Data,2025-01-01
+calgary_open_data,local_police,https://data.calgary.ca/resource/78gh-n8ie.csv,CSV,community_area_centroid,hold,City of Calgary Open Data,2025-01-01
+sfpd_open_data,local_police,https://data.sfgov.org/resource/wg3w-h783.csv,CSV,police_beat_centroid,hold,DataSF — San Francisco Police Department,2025-01-01
+vancouver_open_data,local_police,https://geodash.vpd.ca/opendata/crimedata_download/crimedata_csv_all_years.zip,CSV,neighbourhood_centroid,hold,Vancouver Police Department Open Data,2025-01-01

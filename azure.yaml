@@ -1,0 +1,43 @@
+# Azure Developer CLI configuration for JudgeTracker Atlas
+# Deploys: Backend (FastAPI), Frontend (Next.js), PostgreSQL with PostGIS
+
+name: judgetracker-atlas
+metadata:
+  template: custom
+
+services:
+  backend:
+    project: backend
+    language: python
+    host: containerapp
+    docker:
+      path: Dockerfile.backend
+      context: .
+  frontend:
+    project: frontend
+    language: js
+    host: containerapp
+    docker:
+      path: Dockerfile
+      context: .
+
+infra:
+  provider: bicep
+  path: infra
+  modules:
+    - core
+    - database
+    - app
+
+pipeline:
+  provider: github
+
+hooks:
+  preprovision:
+    shell: sh
+    run: ./scripts/infra-prep.sh
+    continueOnError: false
+  postdeploy:
+    shell: sh
+    run: ./scripts/post-deploy.sh
+    continueOnError: true

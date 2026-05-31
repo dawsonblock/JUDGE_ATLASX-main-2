@@ -1,0 +1,58 @@
+name: Deploy to Azure
+
+on:
+  push:
+    branches:
+      - main
+      - master
+  workflow_dispatch:
+
+permissions:
+  id-token: write
+  contents: read
+
+jobs:
+  # Wait for quality gate to pass before deploying
+  quality-gate:
+    uses: ./.github/workflows/quality-gate.yml
+
+  build-and-deploy:
+    needs: quality-gate
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Install azd
+        uses: Azure/setup-azd@v1.2.0
+        with:
+          version: 'latest'
+
+      - name: Log in to Azure
+        uses: azure/login@v2
+        with:
+          client-id: ${{ secrets.AZURE_CLIENT_ID }}
+          tenant-id: ${{ secrets.AZURE_TENANT_ID }}
+          subscription-id: ${{ secrets.AZURE_SUBSCRIPTION_ID }}
+
+      - name: Provision Infrastructure
+        run: |
+          cd "${{ github.workspace }}"
+          azd provision --no-prompt \
+            --environment ${{ secrets.AZURE_ENV_NAME || 'judgetracker-prod' }}
+        env:
+          AZURE_ENV_NAME: ${{ secrets.AZURE_ENV_NAME || 'judgetracker-prod' }}
+          AZURE_LOCATION: ${{ secrets.AZURE_LOCATION || 'eastus' }}
+          AZURE_POSTGRES_ADMIN_PASSWORD: ${{ secrets.AZURE_POSTGRES_ADMIN_PASSWORD }}
+          AZURE_JWT_SECRET: ${{ secrets.AZURE_JWT_SECRET }}
+          AZURE_ENABLE_ADMIN_REVIEW: ${{ secrets.AZURE_ENABLE_ADMIN_REVIEW || 'false' }}
+          AZURE_ENABLE_ADMIN_IMPORTS: ${{ secrets.AZURE_ENABLE_ADMIN_IMPORTS || 'false' }}
+          AZURE_CORS_ORIGINS: ${{ secrets.AZURE_CORS_ORIGINS || '' }}
+
+      - name: Deploy Application
+        run: |
+          cd "${{ github.workspace }}"
+          azd deploy --no-prompt \
+            --environment ${{ secrets.AZURE_ENV_NAME || 'judgetracker-prod' }}
+        env:
+          AZURE_ENV_NAME: ${{ secrets.AZURE_ENV_NAME || 'judgetracker-prod' }}

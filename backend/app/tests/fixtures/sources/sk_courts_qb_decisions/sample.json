@@ -1,0 +1,23 @@
+{
+  "resultCount": 2,
+  "cases": [
+    {
+      "title": "R v Example QB 1",
+      "url": "https://www.canlii.org/en/sk/skkb/doc/2026/2026skkb1/2026skkb1.html",
+      "decisionDate": "2026-01-10",
+      "citation": "2026 SKKB 1",
+      "caseId": {
+        "en": "2026skkb1"
+      }
+    },
+    {
+      "title": "R v Example QB 2",
+      "url": "https://www.canlii.org/en/sk/skkb/doc/2026/2026skkb2/2026skkb2.html",
+      "decisionDate": "2026-01-11",
+      "citation": "2026 SKKB 2",
+      "caseId": {
+        "en": "2026skkb2"
+      }
+    }
+  ]
+}

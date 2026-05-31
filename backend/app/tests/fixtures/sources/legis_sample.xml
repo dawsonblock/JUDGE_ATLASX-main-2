@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ActsRegsList>
+  <Acts>
+    <Act>
+      <UniqueId>C-46</UniqueId>
+      <OfficialNumber>C-46</OfficialNumber>
+      <Language>eng</Language>
+      <LinkToXML>https://laws-lois.justice.gc.ca/eng/XML/C-46.xml</LinkToXML>
+      <LinkToHTMLToC>https://laws-lois.justice.gc.ca/eng/acts/C-46/index.html</LinkToHTMLToC>
+      <Title>Criminal Code</Title>
+      <CurrentToDate>2026-03-17</CurrentToDate>
+    </Act>
+    <Act>
+      <UniqueId>C-46</UniqueId>
+      <OfficialNumber>C-46</OfficialNumber>
+      <Language>fra</Language>
+      <LinkToXML>https://laws-lois.justice.gc.ca/fra/XML/C-46.xml</LinkToXML>
+      <LinkToHTMLToC>https://laws-lois.justice.gc.ca/fra/lois/C-46/index.html</LinkToHTMLToC>
+      <Title>Code criminel</Title>
+      <CurrentToDate>2026-03-17</CurrentToDate>
+    </Act>
+  </Acts>
+</ActsRegsList>

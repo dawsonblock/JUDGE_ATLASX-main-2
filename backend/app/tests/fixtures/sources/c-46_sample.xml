@@ -1,0 +1,28 @@
+<?xml version="1.0"?>
+<Statute xmlns:lims="http://justice.gc.ca/lims" lims:pit-date="2025-10-10" lims:lastAmendedDate="2025-10-10" lims:current-date="2026-03-02" lims:inforce-start-date="2018-12-18" lims:id="114997">
+  <Identification>
+    <LongTitle>An Act respecting the Criminal Law</LongTitle>
+    <ShortTitle status="official">Criminal Code</ShortTitle>
+    <Chapter>
+      <ConsolidatedNumber official="yes">C-46</ConsolidatedNumber>
+    </Chapter>
+  </Identification>
+  <Body>
+    <Heading level="1">
+      <TitleText>Short Title</TitleText>
+    </Heading>
+    <Section lims:inforce-start-date="2003-01-01" lims:lastAmendedDate="2003-01-01" lims:id="115007">
+      <MarginalNote>Short title</MarginalNote>
+      <Label>1</Label>
+      <Text>This Act may be cited as the Criminal Code.</Text>
+    </Section>
+    <Heading level="1">
+      <TitleText>Interpretation</TitleText>
+    </Heading>
+    <Section lims:inforce-start-date="2018-12-18" lims:lastAmendedDate="2023-01-14" lims:id="115012">
+      <MarginalNote>Definitions</MarginalNote>
+      <Label>2</Label>
+      <Text>In this Act, bodily harm means any hurt or injury to a person that interferes with the health or comfort of the person and that is more than merely transient or trifling in nature.</Text>
+    </Section>
+  </Body>
+</Statute>

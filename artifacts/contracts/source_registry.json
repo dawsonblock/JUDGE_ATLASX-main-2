@@ -1,0 +1,22 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "SourceRegistryListResponse",
+  "type": "object",
+  "required": ["items"],
+  "properties": {
+    "items": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": ["source_key", "source_url", "is_active"],
+        "properties": {
+          "source_key": { "type": "string" },
+          "source_url": { "type": "string", "format": "uri" },
+          "is_active": { "type": "boolean" },
+          "source_type": { "type": ["string", "null"] }
+        }
+      }
+    }
+  }
+}
+

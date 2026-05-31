@@ -1,0 +1,16 @@
+{
+  "success": true,
+  "result": {
+    "records": [
+      {
+        "_id": 2003,
+        "incident_type": "Mischief",
+        "reported_month": "2026-02",
+        "neighbourhood": "Mayfair",
+        "lat": 52.15,
+        "lon": -106.65
+      }
+    ],
+    "total": 3
+  }
+}

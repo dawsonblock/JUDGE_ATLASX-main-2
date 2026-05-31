@@ -1,0 +1,32 @@
+FROM python:3.11.9-slim
+
+# Set working directory
+WORKDIR /workspace
+
+# Install system dependencies required for proof generation
+RUN apt-get update && apt-get install -y \
+    git \
+    build-essential \
+    postgresql-client \
+    && rm -rf /var/lib/apt/lists/*
+
+# Copy entire workspace (needed for proof generation)
+COPY . /workspace
+
+# Install backend dependencies from the canonical lockfile.
+RUN pip install --no-cache-dir uv \
+    && cd /workspace/backend \
+    && uv sync --frozen --extra test
+
+# Ensure proof entrypoint uses the lockfile-resolved backend environment.
+ENV PATH="/workspace/backend/.venv/bin:${PATH}"
+
+# Set environment variables for proof generation
+ENV PYTHONUNBUFFERED=1
+ENV PROOF_ENV=production
+
+# Entry point: run alpha proof gate
+ENTRYPOINT ["python3", "scripts/run_alpha_proof_gate.py"]
+
+# Default command: full proof with JSON output
+CMD ["--full", "--json"]

@@ -1,0 +1,24 @@
+{
+  "success": true,
+  "result": {
+    "records": [
+      {
+        "_id": 2001,
+        "incident_type": "Theft",
+        "reported_month": "2026-02",
+        "neighbourhood": "City Park",
+        "lat": 52.1332,
+        "lon": -106.67
+      },
+      {
+        "_id": 2002,
+        "incident_type": "Assault",
+        "reported_month": "2026-02",
+        "neighbourhood": "Riversdale",
+        "lat": 52.126,
+        "lon": -106.679
+      }
+    ],
+    "total": 3
+  }
+}

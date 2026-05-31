@@ -1,0 +1,9 @@
+{
+  "generated_at_utc": "2026-05-14T19:54:55.223087+00:00",
+  "adapter_count": 13,
+  "stub_adapter_count": 2,
+  "route_count": 99,
+  "test_file_count": 173,
+  "migration_count": 49,
+  "enabled_source_count": 1
+}

@@ -1,0 +1,20 @@
+[
+  {
+    "event_id": "DEMO-EVT-PUBLIC-001",
+    "event_type": "sentencing",
+    "title": "DEMO Sentencing Order Entered",
+    "summary": "Synthetic reviewed court event used to demonstrate public map visibility.",
+    "decision_result": "sentence_entered",
+    "decision_date": "2025-01-15",
+    "posted_date": "2025-01-16",
+    "review_status": "verified_court_record",
+    "public_visibility": true,
+    "verified_flag": true,
+    "source_quality": "court_record",
+    "docket_number": "DEMO-2025-CR-0001",
+    "caption": "DEMO United States v. Sample One",
+    "judge_name": "DEMO Judge Rowan Hale",
+    "defendant_anonymized_id": "DEMO-DEF-0001",
+    "defendant_public_name": "Demo Person A"
+  }
+]

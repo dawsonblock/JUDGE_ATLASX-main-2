@@ -1,0 +1,10 @@
+[
+  {
+    "path": "/api/health",
+    "reason": "served by deployment gateway in some environments"
+  },
+  {
+    "path": "/api/admin/sources/{param}/{param}",
+    "reason": "UI toggle action path resolves to enable/disable internal proxy routes"
+  }
+]

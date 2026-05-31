@@ -1,0 +1,171 @@
+# Workflow for ingesting Saskatchewan court updates
+#
+# This is a safe, official source workflow that fetches structured court data
+# from the Saskatchewan Courts official website. It uses only safe, registered
+# task types and does not involve any shell execution or arbitrary code.
+#
+# Source: https://www.saskcourts.ca/
+# Privacy Risk: Low (official court data, public records)
+# Data Type: Court Events/Decisions
+
+name: ingest_saskatchewan_court_updates
+kind: ingestion
+enabled: true
+
+# Schedule: daily at 4 AM UTC
+schedule: "0 4 * * *"
+
+# Geographic scope
+jurisdiction: "provincial"
+province: "Saskatchewan"
+country: "Canada"
+
+# Source configuration
+source:
+  source_key: "saskatchewan_court_updates"
+  source_type: "official_court_records"
+  lifecycle_state: "active"
+  automation_status: "automated"
+
+# Workflow steps - only safe, registered task types allowed
+steps:
+  - id: fetch_court_data
+    name: Fetch Court Updates
+    uses: fetch_url
+    with:
+      url: "https://www.saskcourts.ca/"
+      headers:
+        User-Agent: "JudgeAtlasX/1.0 (legal-data-ingestion)"
+      timeout_seconds: 300
+      retry_max: 3
+      retry_delay_seconds: 60
+
+  - id: create_evidence_snapshot
+    name: Create Evidence Snapshot
+    uses: evidence_snapshot
+    with:
+      preserve_raw: true
+      store_in_vault: true
+
+  - id: parse_court_events
+    name: Parse Court Events
+    uses: parse_court_events
+    with:
+      parser_version: "1.0"
+      extract_decisions: true
+      extract_hearings: true
+
+  - id: resolve_entities
+    name: Resolve Legal Entities
+    uses: resolve_entities
+    with:
+      entity_types: ["court", "judge", "case_type"]
+      dedupe_by_name: true
+
+  - id: geocode_locations
+    name: Geocode Locations
+    uses: geocode_locations
+    with:
+      provider: "nominatim"
+      country: "CA"
+      province: "Saskatchewan"
+      require_exact: false
+
+  - id: extract_claims
+    name: Extract Claims
+    uses: extract_claims
+    with:
+      claim_types: ["court_decision", "case_filing", "hearing"]
+      confidence_threshold: 0.7
+
+  - id: dedupe_events
+    name: Deduplicate Events
+    uses: dedupe_events
+    with:
+      dedupe_fields: ["case_number", "decision_date", "court"]
+      fuzzy_match_threshold: 0.9
+
+  - id: contradiction_check
+    name: Check Contradictions
+    uses: contradiction_check
+    with:
+      check_against: ["existing_decisions", "case_records"]
+      severity_threshold: "medium"
+
+  - id: confidence_score
+    name: Score Confidence
+    uses: confidence_score
+    with:
+      model: "court_records_v1"
+      min_confidence: 0.6
+
+  - id: legal_correlation
+    name: Legal Correlation
+    uses: legal_correlation
+    with:
+      correlation_types: ["same_case_multiple_sources", "judge_case_news_overlap"]
+      confidence_threshold: 0.5
+
+  - id: enqueue_review
+    name: Enqueue for Review
+    uses: enqueue_review
+    with:
+      review_queue: "court_decisions"
+      auto_approve_threshold: 0.9
+      require_manual_review: false
+
+  - id: materialize_geo_events
+    name: Materialize Geo Events
+    uses: materialize_geo_events
+    with:
+      event_types: ["court_event", "judge_event"]
+      include_location: true
+
+  - id: publish_map_layer
+    name: Publish Map Layer
+    uses: publish_map_layer
+    with:
+      layer_type: "courts"
+      publish_status: "public_safe"
+      require_approval: true
+
+# Review gate configuration
+review_gate:
+  required: true
+  queue: "court_decisions"
+  auto_approve_confidence: 0.95
+  manual_review_confidence: 0.7
+  block_below_confidence: 0.5
+
+# Output configuration
+outputs:
+  artifacts:
+    - name: raw_court_data
+      path: "raw/court_data.html"
+      preserve: true
+    - name: parsed_events
+      path: "parsed/events.json"
+      preserve: true
+    - name: extracted_claims
+      path: "claims/claims.json"
+      preserve: true
+    - name: contradictions_report
+      path: "reports/contradictions.json"
+      preserve: true
+
+# Error handling
+on_error:
+  retry_steps: ["fetch_court_data", "parse_court_events", "extract_claims"]
+  max_retries: 3
+  retry_delay_seconds: 300
+  notify_on_failure: true
+  dead_letter_queue: true
+
+# Metadata
+metadata:
+  version: "1.0"
+  created_at: "2026-05-20"
+  author: "Judge AtlasX Team"
+  description: "Ingest Saskatchewan court updates from official source"
+  risk_level: "low"
+  privacy_impact: "minimal"

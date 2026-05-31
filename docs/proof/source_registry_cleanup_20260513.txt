@@ -1,0 +1,58 @@
+JUDGE_ATLAS Source Registry Cleanup Proof
+Date: 2026-05-13
+Repository: [LOCAL_REPO_ROOT]
+
+Scope
+- Phase 3: Justice Canada XML parser/adapter tests
+- Phase 5: Admin UI lifecycle_state wiring
+- Phase 6: Public truth-language guard extension
+- Phase 12/13: Validation run + reporting artifact
+
+Environment and Interpreter Notes
+- Python 3.11.7 used for final proof commands.
+- Backend package installed editable with test extras:
+  [LOCAL_PYTHON_3_11] -m pip install -e 'backend[test]'
+
+Validation Commands and Results
+
+1) Targeted parser/adapter tests
+Command:
+  [LOCAL_PYTHON_3_11] -m pytest \
+    backend/app/tests/test_justice_canada_xml_parser.py \
+    backend/app/tests/test_laws_justice_xml_adapter.py -v
+
+Result:
+- PASS: 41 passed, 0 failed
+- Warning: passlib crypt deprecation warning (non-blocking)
+
+2) Source-key / status / truth / boundaries checks
+Command sequence:
+  [LOCAL_PYTHON_3_11] scripts/check_source_keys.py
+  [LOCAL_PYTHON_3_11] scripts/check_statuses.py
+  [LOCAL_PYTHON_3_11] scripts/check_truth_claims.py
+  [LOCAL_PYTHON_3_11] scripts/check_external_boundaries.py
+  [LOCAL_PYTHON_3_11] scripts/generate_source_registry_truth_table.py
+
+Result:
+- OK: no hardcoded source key strings in backend/app
+- OK: no hardcoded ingestion status strings in backend/app
+- OK: no unsupported platform claim phrases detected
+- OK: 2 experimental package(s) have NOT_RUNTIME sentinel
+- OK: no unauthorized runtime imports from experimental packages
+- OK: no imports from external sub-repo packages
+- Generated: docs/SOURCE_REGISTRY_STATUS.md
+- Generated: artifacts/proof/current/SOURCE_REGISTRY_STATUS.json
+- Generated: artifacts/proof/current/source_registry_status.log
+- Truth table complete: 26 sources documented
+
+Important Fix During Validation
+- Updated one new adapter test assertion to match `IngestionResult` API:
+  - old assertion: `result.error is not None`
+  - new assertions: `result.errors` and `result.success is False`
+  - file: backend/app/tests/test_laws_justice_xml_adapter.py
+
+Outcome
+- Phase 3 completed and verified
+- Phase 5 completed and wired through backend + frontend contracts
+- Phase 6 completed with expanded banned-phrase guard and scoped policy exceptions
+- Phase 12/13 proof checks completed successfully

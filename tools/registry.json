@@ -1,0 +1,12 @@
+{
+  "tools": [
+    {
+      "name": "judgectl",
+      "description": "The official command-line control surface for THE-JUDGE platform.",
+      "executable": "judgectl",
+      "contract": "docs/JUDGECTL_CONTRACT.md",
+      "skill": "skills/judgectl/SKILL.md",
+      "approved_flags": ["--json", "--yes", "--limit"]
+    }
+  ]
+}

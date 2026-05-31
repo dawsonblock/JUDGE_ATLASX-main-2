@@ -1,0 +1,74 @@
+{
+  "group": "backend_proof",
+  "status": "PASS",
+  "checks": [
+    {
+      "name": "backend_compile",
+      "status": "PASS",
+      "log": "artifacts/proof/current/backend_compile.log",
+      "exit_code": 0
+    },
+    {
+      "name": "backend_import",
+      "status": "PASS",
+      "log": "artifacts/proof/current/backend_import.log",
+      "exit_code": 0
+    },
+    {
+      "name": "backend_pytest",
+      "status": "PASS",
+      "log": "artifacts/proof/current/backend_pytest.log",
+      "exit_code": 0
+    },
+    {
+      "name": "check_migrations",
+      "status": "PASS",
+      "log": "artifacts/proof/current/check_migrations.log",
+      "exit_code": 0
+    },
+    {
+      "name": "prepare_proof_db",
+      "status": "PASS",
+      "log": "artifacts/proof/current/prepare_proof_db.log",
+      "exit_code": 0
+    },
+    {
+      "name": "verify_evidence_store",
+      "status": "PASS",
+      "log": "artifacts/proof/current/verify_evidence_store.log",
+      "exit_code": 0
+    },
+    {
+      "name": "verify_audit_chain",
+      "status": "PASS",
+      "log": "artifacts/proof/current/verify_audit_chain.log",
+      "exit_code": 0
+    },
+    {
+      "name": "auth_mutation_route_coverage",
+      "status": "PASS",
+      "log": "artifacts/proof/current/auth_mutation_route_coverage.log",
+      "exit_code": 0
+    },
+    {
+      "name": "mutation_fail_closed_coverage",
+      "status": "PASS",
+      "log": "artifacts/proof/current/mutation_fail_closed_coverage.log",
+      "exit_code": 0
+    },
+    {
+      "name": "validate_sources",
+      "status": "PASS",
+      "log": "artifacts/proof/current/validate_sources.log",
+      "exit_code": 0
+    }
+  ],
+  "route_count": 112,
+  "pytest_passed": 403,
+  "pytest_skipped": 0,
+  "proof_db_counts": {
+    "audit_logs": 3,
+    "source_snapshots": 3,
+    "source_registry": 0
+  }
+}

@@ -1,0 +1,23 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "ReviewQueueListResponse",
+  "type": "object",
+  "required": ["items"],
+  "properties": {
+    "items": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": ["id", "action", "status"],
+        "properties": {
+          "id": { "type": "integer" },
+          "action": { "type": "string" },
+          "status": { "type": "string" },
+          "entity_type": { "type": ["string", "null"] },
+          "entity_id": { "type": ["string", "null"] }
+        }
+      }
+    }
+  }
+}
+

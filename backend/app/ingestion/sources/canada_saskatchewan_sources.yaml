@@ -1,0 +1,1394 @@
+sources:
+- source_key: justice_canada_laws_xml
+  source_name: Justice Canada Consolidated Acts and Regulations XML
+  jurisdiction: Canada
+  category: legislation
+  country: Canada
+  province_state: null
+  city: null
+  source_type: legislation
+  source_tier: official_government_legislation
+  public_record_authority: official_legislation
+  license: "Open Government Licence \u2013 Canada"
+  license_url: https://open.canada.ca/license-agreement
+  terms_url: https://laws-lois.justice.gc.ca/eng/licence.html
+  base_url: https://laws-lois.justice.gc.ca/eng/XML/Legis.xml
+  allowed_domains:
+  - laws-lois.justice.gc.ca
+  - lois-laws.justice.gc.ca
+  fetch_method: api
+  update_cadence: weekly
+  refresh_interval_minutes: 10080
+  parser: laws_justice_xml
+  creates:
+  - SourceSnapshot
+  - LegalInstrument
+  - LegalSection
+  - ReviewItem
+  enabled_default: false
+  auto_publish_enabled: false
+  requires_manual_review: true
+  public_publish_default: false
+  precision_level: national
+  priority: 1
+  source_class: machine_ingest
+  automation_status: machine_ready_enabled
+  parser_version: justice_laws_xml_v1
+  config_json: '{"pinned":true}'
+  admin_notes: "Consolidated federal Acts and regulations in XML. Open Canada bulk\
+    \ export. No API key required. Snapshot \u2192 hash \u2192 parse \u2192 review.\
+    \ PINNED as real local data source; adapter and parser verified ready."
+  lifecycle_state: runnable
+  status_reason: Pinned as canonical real local data source. Adapter (laws_justice_xml_v1)
+    and parser are verified. Feed reachable at base_url. Manual review gate remains
+    active before any public publish.
+  operator_next_step: None. Source is pinned and enabled. Monitor ingestion runs and
+    review queue for new snapshots.
+  confidence_class: primary_official
+  retention_policy: indefinite
+  canonical_url: https://laws-lois.justice.gc.ca/eng/XML/Legis.xml
+  evidence_required: true
+  terms_verified: '2026-05-06'
+  authentication_required: false
+  rate_limit_policy: polite_1rps
+  adapter:
+    parser: laws_justice_xml
+    mode: api
+    machine_ingest_enabled: true
+    requires_secret: false
+    rate_limit_rpm: 30
+    timeout_seconds: 30
+  test_fixtures:
+  - type: json
+    path: backend/app/tests/fixtures/sources/justice_canada_laws_xml/sample.json
+    expected_min_records: 1
+- source_key: justice_canada_laws_pit_xml
+  source_name: "Department of Justice Canada \u2013 Point-in-Time Laws XML"
+  jurisdiction: Canada
+  category: legislation
+  country: Canada
+  province_state: null
+  city: null
+  source_type: legislation
+  source_tier: official_government_legislation
+  public_record_authority: official_legislation
+  license: "Open Government Licence \u2013 Canada"
+  license_url: https://open.canada.ca/license-agreement
+  terms_url: https://laws-lois.justice.gc.ca/eng/licence.html
+  base_url: https://laws-lois.justice.gc.ca
+  allowed_domains:
+  - laws-lois.justice.gc.ca
+  - lois-laws.justice.gc.ca
+  - open.canada.ca
+  fetch_method: api
+  update_cadence: monthly
+  refresh_interval_minutes: 43200
+  parser: null
+  creates: []
+  enabled_default: false
+  auto_publish_enabled: false
+  requires_manual_review: true
+  public_publish_default: false
+  precision_level: national
+  priority: 2
+  source_class: disabled_stub
+  automation_status: adapter_missing
+  parser_version: null
+  config_json: '{}'
+  admin_notes: Point-in-time versions of federal laws. Enables historical legal change
+    tracking. Requires parser logic for date-versioned XML.
+  lifecycle_state: disabled_stub
+  status_reason: "Point-in-time XML variant \u2014 stub only; no adapter written for\
+    \ PIT format."
+  operator_next_step: Write a PIT-date-parameterised adapter or remove if not needed.
+  confidence_class: primary_official
+  retention_policy: indefinite
+  canonical_url: https://laws-lois.justice.gc.ca
+  evidence_required: false
+  terms_verified: false
+  authentication_required: false
+  rate_limit_policy: polite_1rps
+  test_fixtures:
+  - type: json
+    path: backend/app/tests/fixtures/sources/justice_canada_laws_pit_xml/sample.json
+    expected_min_records: 1
+- source_key: scc_judgments
+  source_name: "Supreme Court of Canada \u2013 Judgments"
+  jurisdiction: Canada
+  category: court_decisions
+  country: Canada
+  province_state: null
+  city: null
+  source_type: court_record
+  source_tier: supreme_court
+  public_record_authority: official_court_record
+  license: "Crown copyright \u2013 public access"
+  license_url: https://www.scc-csc.ca/en/about-the-court/decisions
+  terms_url: https://www.scc-csc.ca/en/about-the-court/decisions
+  base_url: https://www.scc-csc.ca
+  allowed_domains:
+  - scc-csc.ca
+  - decisions.scc-csc.ca
+  - scc-csc.lexum.com
+  fetch_method: api
+  update_cadence: daily
+  refresh_interval_minutes: 1440
+  parser: scc_lexum_api
+  creates:
+  - ReviewItem
+  enabled_default: false
+  auto_publish_enabled: false
+  requires_manual_review: true
+  public_publish_default: true
+  precision_level: national
+  priority: 2
+  source_class: machine_ingest
+  automation_status: deprecated
+  parser_version: '1.0'
+  config_json: '{}'
+  admin_notes: 'SCC judgments via Lexum API. Requires LEXUM_API_KEY. Validated 2026-05-06:
+    RSS feed available at decisions.scc-csc.ca.'
+  lifecycle_state: deprecated
+  canonical_replacement_key: scc_decisions
+  status_reason: Superseded by scc_decisions. Both point to the same Supreme Court
+    of Canada dataset; scc_decisions is the canonical key.
+  operator_next_step: Migrate any references from scc_judgments to scc_decisions and
+    remove this entry.
+  confidence_class: primary_official
+  retention_policy: indefinite
+  canonical_url: https://decisions.scc-csc.ca
+  evidence_required: true
+  terms_verified: '2026-05-06'
+  authentication_required: true
+  rate_limit_policy: api_key_required
+  adapter:
+    parser: scc_lexum_api
+    mode: api
+    machine_ingest_enabled: false
+    requires_secret: true
+    rate_limit_rpm: 30
+    timeout_seconds: 30
+  test_fixtures:
+  - type: json
+    path: backend/app/tests/fixtures/sources/scc_judgments/sample.json
+    expected_min_records: 1
+  deprecation_policy:
+    status: deprecated
+    replacement_source_key: scc_decisions
+    reason: replaced_by_canonical_source
+    removal_allowed_after: null
+  public_status:
+    public_publish_default: false
+    requires_manual_review: true
+    auto_publish_enabled: false
+- source_key: federal_court_canada_decisions
+  source_name: "Federal Court of Canada \u2013 Decisions"
+  jurisdiction: Canada
+  category: court_decisions
+  country: Canada
+  province_state: null
+  city: null
+  source_type: court_record
+  source_tier: federal_court
+  public_record_authority: official_court_record
+  license: "Crown copyright \u2013 public access"
+  license_url: https://www.fct-cf.gc.ca/en/pages/terms-and-conditions
+  terms_url: https://www.fct-cf.gc.ca/en/pages/terms-and-conditions
+  base_url: https://decisions.fct-cf.gc.ca
+  allowed_domains:
+  - fct-cf.ca
+  - decisions.fct-cf.gc.ca
+  fetch_method: web_scrape
+  update_cadence: daily
+  refresh_interval_minutes: 1440
+  parser: federal_court_html
+  creates:
+  - ReviewItem
+  enabled_default: false
+  auto_publish_enabled: false
+  requires_manual_review: true
+  public_publish_default: true
+  precision_level: national
+  priority: 3
+  source_class: portal_reference
+  automation_status: deprecated
+  parser_version: null
+  config_json: '{}'
+  admin_notes: Portal-reference pending stable decision-list fetching and pagination
+    tests. Adapter exists but promote to machine_ingest only after proof of stable
+    HTML structure.
+  lifecycle_state: deprecated
+  canonical_replacement_key: federal_court_canada
+  status_reason: Superseded by federal_court_canada, which has a machine_ingest adapter.
+    This portal_reference variant is no longer maintained.
+  operator_next_step: Migrate any references from federal_court_canada_decisions to
+    federal_court_canada and remove this entry.
+  confidence_class: primary_official
+  retention_policy: indefinite
+  canonical_url: https://decisions.fct-cf.gc.ca
+  evidence_required: false
+  terms_verified: false
+  authentication_required: false
+  rate_limit_policy: polite_1rps
+  test_fixtures:
+  - type: reference_only
+    path: null
+    expected_min_records: 0
+  deprecation_policy:
+    status: deprecated
+    replacement_source_key: federal_court_canada
+    reason: replaced_by_canonical_source
+    removal_allowed_after: null
+  public_status:
+    public_publish_default: false
+    requires_manual_review: true
+    auto_publish_enabled: false
+- source_key: statscan_crime_tables
+  source_name: "Statistics Canada \u2013 Crime and Justice Tables"
+  jurisdiction: Canada
+  category: crime_statistics
+  country: Canada
+  province_state: null
+  city: null
+  source_type: aggregate_stats
+  source_tier: official_government_statistics
+  public_record_authority: official_statistics
+  license: Statistics Canada Licence Agreement
+  license_url: https://www.statcan.gc.ca/eng/reference/licence
+  terms_url: https://www.statcan.gc.ca/eng/reference/licence
+  base_url: https://www.statcan.gc.ca
+  allowed_domains:
+  - statcan.gc.ca
+  - www150.statcan.gc.ca
+  fetch_method: api
+  update_cadence: quarterly
+  refresh_interval_minutes: 131040
+  parser: statscan_table
+  creates:
+  - ReviewItem
+  enabled_default: false
+  auto_publish_enabled: false
+  requires_manual_review: true
+  public_publish_default: true
+  precision_level: provincial
+  priority: 3
+  source_class: portal_reference
+  automation_status: adapter_missing
+  parser_version: null
+  config_json: '{}'
+  admin_notes: CCJS (Canadian Centre for Justice Statistics) and UCR (Uniform Crime
+    Reporting) tables. Promote to machine_ingest after pinning exact table IDs and
+    writing schema tests.
+  lifecycle_state: portal_reference
+  status_reason: Statistics Canada crime tables are available only via a web portal;
+    no public fetch API currently exists.
+  operator_next_step: Monitor StatsCan API roadmap; build adapter if open data endpoint
+    is published.
+  confidence_class: primary_official
+  retention_policy: 7_years
+  canonical_url: https://www.statcan.gc.ca
+  evidence_required: false
+  terms_verified: false
+  authentication_required: false
+  rate_limit_policy: polite_1rps
+  test_fixtures:
+  - type: reference_only
+    path: null
+    expected_min_records: 0
+  public_status:
+    public_publish_default: false
+    requires_manual_review: true
+    auto_publish_enabled: false
+- source_key: saskatchewan_legislation
+  source_name: "Saskatchewan Legislation \u2013 Acts and Regulations"
+  jurisdiction: CA-SK
+  category: legislation
+  country: Canada
+  province_state: Saskatchewan
+  city: null
+  source_type: legislation
+  source_tier: provincial_legislation
+  public_record_authority: official_legislation
+  license: "Crown Licence \u2013 Public Domain"
+  license_url: https://www.publications.saskatchewan.ca
+  terms_url: https://www.publications.saskatchewan.ca
+  base_url: https://www.publications.saskatchewan.ca
+  allowed_domains:
+  - publications.saskatchewan.ca
+  - saskatchewan.ca
+  fetch_method: web_scrape
+  update_cadence: monthly
+  refresh_interval_minutes: 43200
+  parser: null
+  creates:
+  - ReviewItem
+  enabled_default: false
+  auto_publish_enabled: false
+  requires_manual_review: true
+  public_publish_default: true
+  precision_level: provincial
+  priority: 4
+  source_class: portal_reference
+  automation_status: adapter_missing
+  parser_version: null
+  config_json: '{}'
+  admin_notes: Provincial statutes and regulations. Portal-reference until stable
+    XML/HTML/PDF endpoints and version metadata are identified.
+  lifecycle_state: portal_reference
+  status_reason: Saskatchewan legislation available via QP Source portal; no machine-ingestable
+    feed exists.
+  operator_next_step: Evaluate whether an RSS/XML feed can be configured; otherwise
+    keep as portal_reference.
+  confidence_class: primary_official
+  retention_policy: indefinite
+  canonical_url: https://www.publications.saskatchewan.ca
+  evidence_required: false
+  terms_verified: false
+  authentication_required: false
+  rate_limit_policy: polite_1rps
+  test_fixtures:
+  - type: reference_only
+    path: null
+    expected_min_records: 0
+  public_status:
+    public_publish_default: false
+    requires_manual_review: true
+    auto_publish_enabled: false
+- source_key: saskatoon_open_data_public_safety
+  source_name: "City of Saskatoon Open Data \u2013 Public Safety"
+  jurisdiction: CA-SK-Saskatoon
+  category: city_open_data
+  country: Canada
+  province_state: Saskatchewan
+  city: Saskatoon
+  source_type: aggregate_stats
+  source_tier: municipal_open_data
+  public_record_authority: official_open_data
+  license: "Open Government Licence \u2013 City of Saskatoon"
+  license_url: https://opendata.saskatoon.ca/licence
+  terms_url: https://opendata.saskatoon.ca/licence
+  base_url: https://opendata.saskatoon.ca
+  allowed_domains:
+  - saskatoon.ca
+  - opendata.saskatoon.ca
+  - opendata-saskatoon.cloudapp.net
+  - data.saskatoon.ca
+  fetch_method: api
+  update_cadence: monthly
+  refresh_interval_minutes: 43200
+  parser: ckan_api
+  creates:
+  - ReviewItem
+  enabled_default: false
+  auto_publish_enabled: false
+  requires_manual_review: true
+  public_publish_default: false
+  precision_level: city_block
+  priority: 4
+  source_class: machine_ingest
+  automation_status: machine_ready_enabled
+  parser_version: ckan_api_v1
+  config_json: '{"resource_id":"saskatoon-public-safety-fixture","page_limit":100,"max_pages":2,"offset":0}'
+  admin_notes: Staged CKAN machine-ingest source in disabled mode. Fixture-backed
+    proof path is available for CI without live network dependency. All outputs remain
+    review-only pending manual review.
+  lifecycle_state: runnable
+  status_reason: "Saskatoon public safety CKAN adapter staged and validated in fixture mode;\
+    \ source remains disabled pending operator review."
+  operator_next_step: Run fixture proof target, confirm review-only payloads, then
+    enable only after legal and data-quality verification.
+  confidence_class: primary_official
+  retention_policy: 7_years
+  canonical_url: https://opendata.saskatoon.ca
+  evidence_required: true
+  terms_verified: '2026-05-21'
+  authentication_required: false
+  rate_limit_policy: polite_1rps
+  adapter:
+    parser: ckan_api
+    mode: api
+    machine_ingest_enabled: true
+    requires_secret: false
+    rate_limit_rpm: 30
+    timeout_seconds: 30
+  test_fixtures:
+  - type: json
+    path: backend/app/tests/fixtures/saskatoon_open_data_crime_sample.json
+    expected_min_records: 1
+- source_key: saskatoon_open_data_crime
+  source_name: "City of Saskatoon Open Data \u2013 Crime Incidents"
+  jurisdiction: Saskatoon, Saskatchewan, Canada
+  category: crime_statistics
+  country: Canada
+  province_state: Saskatchewan
+  city: Saskatoon
+  source_type: crime_incident
+  source_tier: official_police_open_data
+  public_record_authority: official_open_data
+  license: "Open Government Licence \u2013 City of Saskatoon"
+  license_url: https://opendata.saskatoon.ca/licence
+  terms_url: https://opendata.saskatoon.ca/licence
+  base_url: https://opendata.saskatoon.ca
+  allowed_domains:
+  - opendata.saskatoon.ca
+  fetch_method: csv_download
+  update_cadence: monthly
+  refresh_interval_minutes: 44640
+  parser: saskatoon_csv
+  creates:
+  - CrimeIncident
+  enabled_default: false
+  auto_publish_enabled: false
+  requires_manual_review: true
+  public_publish_default: false
+  precision_level: city_block
+  priority: 1
+  source_class: portal_reference
+  automation_status: adapter_missing
+  lifecycle_state: portal_reference
+  status_reason: Saskatoon Open Data crime statistics require portal download.
+  operator_next_step: Check data.saskatoon.ca for updated CSV/JSON endpoint; write
+    adapter if machine-readable.
+  confidence_class: primary_official
+  retention_policy: 7_years
+  canonical_url: https://opendata.saskatoon.ca
+  evidence_required: false
+  terms_verified: false
+  authentication_required: false
+  rate_limit_policy: polite_1rps
+  test_fixtures:
+  - type: reference_only
+    path: null
+    expected_min_records: 0
+- source_key: saskatoon_police_open_data
+  source_name: "Saskatoon Police Service \u2013 Open Data Portal"
+  jurisdiction: Saskatoon, Saskatchewan, Canada
+  category: crime_statistics
+  country: Canada
+  province_state: Saskatchewan
+  city: Saskatoon
+  source_type: crime_incident
+  source_tier: official_police_open_data
+  public_record_authority: official_open_data
+  license: "Open Government Licence \u2013 Saskatchewan"
+  license_url: https://www.saskatoonpolice.ca/about/open-data
+  terms_url: https://www.saskatoonpolice.ca/about/open-data
+  base_url: https://www.saskatoonpolice.ca
+  allowed_domains:
+  - saskatoonpolice.ca
+  - www.saskatoonpolice.ca
+  fetch_method: csv_download
+  update_cadence: monthly
+  refresh_interval_minutes: 44640
+  parser: saskatoon_police_csv
+  creates:
+  - CrimeIncident
+  enabled_default: false
+  auto_publish_enabled: false
+  requires_manual_review: true
+  public_publish_default: false
+  precision_level: city_block
+  priority: 1
+  source_class: portal_reference
+  automation_status: adapter_missing
+  lifecycle_state: portal_reference
+  status_reason: "Saskatoon Police Service open data portal \u2014 datasets require\
+    \ manual download."
+  operator_next_step: Monitor Saskatoon Police data portal for a machine-readable
+    feed.
+  confidence_class: primary_official
+  retention_policy: 7_years
+  canonical_url: https://www.saskatoonpolice.ca
+  evidence_required: false
+  terms_verified: false
+  authentication_required: false
+  rate_limit_policy: polite_1rps
+  test_fixtures:
+  - type: reference_only
+    path: null
+    expected_min_records: 0
+- source_key: web_monitor_saskatoon_police_news
+  source_name: "Saskatoon Police Service \u2013 News Releases (Web Monitor)"
+  jurisdiction: Saskatoon, Saskatchewan, Canada
+  category: news_releases
+  country: Canada
+  province_state: Saskatchewan
+  city: Saskatoon
+  source_type: news_monitor
+  source_tier: news_only_context
+  public_record_authority: news_context
+  license: all_rights_reserved
+  terms_url: https://www.saskatoonpolice.ca
+  base_url: https://www.saskatoonpolice.ca
+  allowed_domains:
+  - saskatoonpolice.ca
+  - www.saskatoonpolice.ca
+  fetch_method: web_monitor
+  update_cadence: daily
+  refresh_interval_minutes: 1440
+  parser: crawlee_police_release
+  creates:
+  - ReviewItem
+  enabled_default: false
+  auto_publish_enabled: false
+  requires_manual_review: true
+  public_publish_default: false
+  precision_level: city_centroid
+  priority: 2
+  source_class: disabled_stub
+  automation_status: adapter_missing
+  admin_notes: crawlee_police_release adapter not yet implemented; reclassified from
+    machine_ingest pending real adapter.
+  lifecycle_state: disabled_stub
+  status_reason: "Web monitoring stub for Saskatoon Police news \u2014 no scraper\
+    \ adapter built."
+  operator_next_step: Evaluate whether a scraper is required or remove this stub.
+  confidence_class: tertiary
+  retention_policy: rolling_90_days
+  canonical_url: https://www.saskatoonpolice.ca
+  evidence_required: false
+  terms_verified: false
+  authentication_required: false
+  rate_limit_policy: polite_1rps
+  test_fixtures:
+  - type: json
+    path: backend/app/tests/fixtures/sources/web_monitor_saskatoon_police_news/sample.json
+    expected_min_records: 1
+- source_key: sk_courts_qb_decisions
+  source_name: "Saskatchewan Court of King's Bench \u2013 Decisions"
+  jurisdiction: Saskatchewan, Canada
+  category: court_decisions
+  country: Canada
+  province_state: Saskatchewan
+  city: null
+  source_type: court_record
+  source_tier: court_record
+  public_record_authority: official_court_record
+  license: "Crown copyright \u2013 public access"
+  terms_url: https://www.sasklawcourts.ca
+  base_url: https://api.canlii.org/v1
+  allowed_domains:
+  - api.canlii.org
+  - canlii.org
+  - www.canlii.org
+  fetch_method: api
+  update_cadence: daily
+  refresh_interval_minutes: 1440
+  parser: canlii_api
+  creates:
+  - ReviewItem
+  enabled_default: false
+  auto_publish_enabled: false
+  requires_manual_review: true
+  public_publish_default: false
+  precision_level: city_centroid
+  priority: 2
+  source_class: machine_ingest
+  automation_status: machine_ready_disabled
+  parser_version: '1.0'
+  config_json: '{"databases": ["skkb"]}'
+  admin_notes: 'Validated 2026-05-06: Uses CanLII API (api.canlii.org/v1). Requires
+    CANLII_API_KEY env var. Database: skkb (Saskatchewan Court of King''s Bench).
+    Register at https://www.canlii.org/en/info/api.html'
+  lifecycle_state: runnable_disabled
+  status_reason: Saskatchewan Court of King's Bench decisions adapter is ready; source
+    not yet enabled.
+  operator_next_step: Confirm terms of use, then enable via admin panel after clean
+    proof.
+  confidence_class: primary_official
+  retention_policy: indefinite
+  canonical_url: https://api.canlii.org/v1
+  evidence_required: true
+  terms_verified: '2026-05-06'
+  authentication_required: true
+  rate_limit_policy: api_key_required
+  adapter:
+    parser: canlii_api
+    mode: api
+    machine_ingest_enabled: false
+    requires_secret: true
+    rate_limit_rpm: 30
+    timeout_seconds: 30
+  test_fixtures:
+  - type: json
+    path: backend/app/tests/fixtures/sources/sk_courts_qb_decisions/sample.json
+    expected_min_records: 1
+- source_key: sk_courts_ca_decisions
+  source_name: "Saskatchewan Court of Appeal \u2013 Decisions"
+  jurisdiction: Saskatchewan, Canada
+  category: court_decisions
+  country: Canada
+  province_state: Saskatchewan
+  city: null
+  source_type: court_record
+  source_tier: court_record
+  public_record_authority: official_court_record
+  license: "Crown copyright \u2013 public access"
+  terms_url: https://www.sasklawcourts.ca
+  base_url: https://api.canlii.org/v1
+  allowed_domains:
+  - api.canlii.org
+  - canlii.org
+  - www.canlii.org
+  fetch_method: api
+  update_cadence: daily
+  refresh_interval_minutes: 1440
+  parser: canlii_api
+  creates:
+  - ReviewItem
+  enabled_default: false
+  auto_publish_enabled: false
+  requires_manual_review: true
+  public_publish_default: false
+  precision_level: city_centroid
+  priority: 2
+  source_class: machine_ingest
+  automation_status: machine_ready_disabled
+  parser_version: '1.0'
+  config_json: '{"databases": ["skca"]}'
+  admin_notes: 'Validated 2026-05-06: Uses CanLII API (api.canlii.org/v1). Requires
+    CANLII_API_KEY env var. Database: skca (Saskatchewan Court of Appeal). Register
+    at https://www.canlii.org/en/info/api.html'
+  lifecycle_state: runnable_disabled
+  status_reason: Saskatchewan Court of Appeal decisions adapter is ready; source not
+    yet enabled.
+  operator_next_step: Confirm terms of use, then /enable via admin panel.
+  confidence_class: primary_official
+  retention_policy: indefinite
+  canonical_url: https://api.canlii.org/v1
+  evidence_required: true
+  terms_verified: '2026-05-06'
+  authentication_required: true
+  rate_limit_policy: api_key_required
+  adapter:
+    parser: canlii_api
+    mode: api
+    machine_ingest_enabled: false
+    requires_secret: true
+    rate_limit_rpm: 30
+    timeout_seconds: 30
+  test_fixtures:
+  - type: json
+    path: backend/app/tests/fixtures/sources/sk_courts_ca_decisions/sample.json
+    expected_min_records: 1
+- source_key: statscan_ccjs_crime_sk
+  source_name: "Statistics Canada \u2013 Canadian Centre for Justice Statistics (SK)"
+  jurisdiction: Saskatchewan, Canada
+  category: crime_statistics
+  country: Canada
+  province_state: Saskatchewan
+  city: null
+  source_type: aggregate_stats
+  source_tier: official_government_statistics
+  public_record_authority: official_statistics
+  license: Statistics Canada Open Licence
+  license_url: https://www.statcan.gc.ca/en/reference/licence
+  terms_url: https://www.statcan.gc.ca/en/reference/licence
+  base_url: https://www150.statcan.gc.ca
+  allowed_domains:
+  - statcan.gc.ca
+  - www150.statcan.gc.ca
+  fetch_method: api
+  update_cadence: annual
+  refresh_interval_minutes: 525600
+  parser: statscan_table
+  creates:
+  - ReviewItem
+  enabled_default: false
+  auto_publish_enabled: false
+  requires_manual_review: true
+  public_publish_default: true
+  precision_level: province
+  priority: 2
+  source_class: portal_reference
+  automation_status: adapter_missing
+  lifecycle_state: portal_reference
+  status_reason: "Statistics Canada CCJS Saskatchewan crime data \u2014 portal download\
+    \ only."
+  operator_next_step: Monitor StatsCan open data API for a machine-readable CCJS endpoint.
+  confidence_class: primary_official
+  retention_policy: 7_years
+  canonical_url: https://www150.statcan.gc.ca
+  evidence_required: false
+  terms_verified: false
+  authentication_required: false
+  rate_limit_policy: polite_1rps
+  test_fixtures:
+  - type: reference_only
+    path: null
+    expected_min_records: 0
+  public_status:
+    public_publish_default: false
+    requires_manual_review: true
+    auto_publish_enabled: false
+- source_key: statscan_ucr_national
+  source_name: "Statistics Canada \u2013 Uniform Crime Reporting Survey (national)"
+  jurisdiction: Canada
+  category: crime_statistics
+  country: Canada
+  province_state: null
+  city: null
+  source_type: aggregate_stats
+  source_tier: official_government_statistics
+  public_record_authority: official_statistics
+  license: Statistics Canada Open Licence
+  license_url: https://www.statcan.gc.ca/en/reference/licence
+  terms_url: https://www.statcan.gc.ca/en/reference/licence
+  base_url: https://www150.statcan.gc.ca
+  allowed_domains:
+  - statcan.gc.ca
+  - www150.statcan.gc.ca
+  fetch_method: api
+  update_cadence: annual
+  refresh_interval_minutes: 525600
+  parser: statscan_table
+  creates:
+  - ReviewItem
+  enabled_default: false
+  auto_publish_enabled: false
+  requires_manual_review: true
+  public_publish_default: true
+  precision_level: national
+  priority: 3
+  source_class: portal_reference
+  automation_status: adapter_missing
+  lifecycle_state: portal_reference
+  status_reason: "UCR national crime statistics \u2014 portal download only."
+  operator_next_step: Monitor StatsCan open data API for a machine-readable UCR endpoint.
+  confidence_class: primary_official
+  retention_policy: 7_years
+  canonical_url: https://www150.statcan.gc.ca
+  evidence_required: false
+  terms_verified: false
+  authentication_required: false
+  rate_limit_policy: polite_1rps
+  test_fixtures:
+  - type: reference_only
+    path: null
+    expected_min_records: 0
+  public_status:
+    public_publish_default: false
+    requires_manual_review: true
+    auto_publish_enabled: false
+- source_key: canlii_sk
+  source_name: "CanLII \u2013 Saskatchewan Courts"
+  jurisdiction: Saskatchewan, Canada
+  category: court_decisions
+  country: Canada
+  province_state: Saskatchewan
+  city: null
+  source_type: court_record
+  source_tier: court_record
+  public_record_authority: official_court_record
+  license: CanLII Licence
+  license_url: https://www.canlii.org/en/info/terms.html
+  terms_url: https://www.canlii.org/en/info/terms.html
+  base_url: https://api.canlii.org/v1
+  allowed_domains:
+  - canlii.org
+  - www.canlii.org
+  - api.canlii.org
+  fetch_method: api
+  update_cadence: daily
+  refresh_interval_minutes: 1440
+  parser: canlii_api
+  creates:
+  - ReviewItem
+  enabled_default: false
+  auto_publish_enabled: false
+  requires_manual_review: true
+  public_publish_default: false
+  precision_level: city_centroid
+  priority: 2
+  source_class: portal_reference
+  automation_status: adapter_missing
+  lifecycle_state: portal_reference
+  status_reason: "CanLII Saskatchewan \u2014 terms of service restrict automated scraping."
+  operator_next_step: Negotiate data access agreement with CanLII, or use only as
+    a reference link.
+  confidence_class: primary_official
+  retention_policy: indefinite
+  canonical_url: https://api.canlii.org/v1
+  evidence_required: false
+  terms_verified: false
+  authentication_required: false
+  rate_limit_policy: polite_1rps
+  test_fixtures:
+  - type: reference_only
+    path: null
+    expected_min_records: 0
+- source_key: federal_court_canada
+  source_name: "Federal Court of Canada \u2013 Decisions"
+  jurisdiction: Canada
+  category: court_decisions
+  country: Canada
+  province_state: null
+  city: null
+  source_type: court_record
+  source_tier: court_record
+  public_record_authority: official_court_record
+  license: "Crown copyright \u2013 public access"
+  terms_url: https://www.fct-cf.gc.ca/en/pages/terms-and-conditions
+  base_url: https://decisions.fct-cf.gc.ca/fc-cf/en/0/ann.do?iframe=true
+  allowed_domains:
+  - fct-cf.gc.ca
+  - decisions.fct-cf.gc.ca
+  - www.fct-cf.gc.ca
+  fetch_method: web_scrape
+  update_cadence: daily
+  refresh_interval_minutes: 1440
+  source_class: machine_ingest
+  automation_status: machine_ready_disabled
+  parser_version: '1.0'
+  parser: federal_court_html
+  creates:
+  - ReviewItem
+  enabled_default: false
+  auto_publish_enabled: false
+  requires_manual_review: true
+  public_publish_default: false
+  precision_level: city_centroid
+  priority: 3
+  admin_notes: 'Validated 2026-05-06: decisions page uses iframe; content at ?iframe=true.
+    Decision links: /fc-cf/decisions/en/item/NNNNN/index.do. h3 format: CaseName-NeutralCitation-Date.'
+  lifecycle_state: runnable_disabled
+  status_reason: Federal Court of Canada adapter ready; source awaiting operator /enable.
+  operator_next_step: Confirm base_url is reachable and terms permit ingest, then
+    /enable via admin panel.
+  confidence_class: primary_official
+  retention_policy: indefinite
+  canonical_url: https://decisions.fct-cf.gc.ca
+  evidence_required: true
+  terms_verified: '2026-05-06'
+  authentication_required: false
+  rate_limit_policy: polite_1rps
+  adapter:
+    parser: federal_court_html
+    mode: web_scrape
+    machine_ingest_enabled: false
+    requires_secret: false
+    rate_limit_rpm: 30
+    timeout_seconds: 30
+  test_fixtures:
+  - type: json
+    path: backend/app/tests/fixtures/sources/federal_court_canada/sample.json
+    expected_min_records: 1
+- source_key: scc_decisions
+  source_name: "Supreme Court of Canada \u2013 Decisions"
+  jurisdiction: Canada
+  category: court_decisions
+  country: Canada
+  province_state: null
+  city: null
+  source_type: court_record
+  source_tier: court_record
+  public_record_authority: official_court_record
+  license: "Crown copyright \u2013 public access"
+  terms_url: https://www.scc-csc.ca/home-accueil/index-eng.aspx
+  base_url: https://decisions.scc-csc.ca/scc-csc/scc-csc/en/rss.do
+  allowed_domains:
+  - scc-csc.ca
+  - www.scc-csc.ca
+  - decisions.scc-csc.ca
+  - scc-csc.lexum.com
+  - lexum.com
+  fetch_method: api
+  update_cadence: weekly
+  refresh_interval_minutes: 10080
+  parser: scc_lexum_api
+  creates:
+  - ReviewItem
+  enabled_default: false
+  auto_publish_enabled: false
+  requires_manual_review: true
+  public_publish_default: false
+  precision_level: national
+  priority: 3
+  source_class: machine_ingest
+  automation_status: machine_ready_disabled
+  parser_version: '1.0'
+  admin_notes: 'Validated 2026-05-06: RSS feed at decisions.scc-csc.ca returns 100
+    items. Fields: title (whitespace-heavy), link, description, date (not pubDate).
+    Title format: CaseName - NeutralCitation - YYYY-MM-DD.'
+  lifecycle_state: runnable_disabled
+  status_reason: Supreme Court of Canada decisions adapter ready; source awaiting
+    operator /enable.
+  operator_next_step: Confirm base_url is reachable and terms permit ingest, then
+    /enable via admin panel.
+  confidence_class: primary_official
+  retention_policy: indefinite
+  canonical_url: https://decisions.scc-csc.ca/scc-csc/scc-csc/en/rss.do
+  evidence_required: true
+  terms_verified: '2026-05-06'
+  authentication_required: false
+  rate_limit_policy: polite_1rps
+  adapter:
+    parser: scc_lexum_api
+    mode: api
+    machine_ingest_enabled: false
+    requires_secret: false
+    rate_limit_rpm: 30
+    timeout_seconds: 30
+  test_fixtures:
+  - type: json
+    path: backend/app/tests/fixtures/sources/scc_decisions/sample.json
+    expected_min_records: 1
+- source_key: sk_justice_ministry
+  source_name: "Saskatchewan Ministry of Justice \u2013 News Releases"
+  jurisdiction: Saskatchewan, Canada
+  category: government_news
+  country: Canada
+  province_state: Saskatchewan
+  city: null
+  source_type: news_monitor
+  source_tier: news_only_context
+  public_record_authority: news_context
+  license: Crown copyright
+  terms_url: https://www.saskatchewan.ca/government/about-the-government-of-saskatchewan/terms-of-use
+  base_url: https://www.saskatchewan.ca
+  allowed_domains:
+  - saskatchewan.ca
+  - www.saskatchewan.ca
+  fetch_method: web_monitor
+  update_cadence: daily
+  refresh_interval_minutes: 1440
+  parser: crawlee_gov_news
+  creates:
+  - ReviewItem
+  enabled_default: false
+  auto_publish_enabled: false
+  requires_manual_review: true
+  public_publish_default: false
+  precision_level: province
+  priority: 3
+  source_class: disabled_stub
+  automation_status: adapter_missing
+  admin_notes: crawlee_gov_news adapter not yet implemented; reclassified from machine_ingest
+    pending real adapter.
+  lifecycle_state: disabled_stub
+  status_reason: "Saskatchewan Justice Ministry publications \u2014 stub only; no\
+    \ adapter written."
+  operator_next_step: Define what specific data is needed, then write a targeted adapter.
+  confidence_class: tertiary
+  retention_policy: rolling_90_days
+  canonical_url: https://www.saskatchewan.ca
+  evidence_required: false
+  terms_verified: false
+  authentication_required: false
+  rate_limit_policy: polite_1rps
+  test_fixtures:
+  - type: json
+    path: backend/app/tests/fixtures/sources/sk_justice_ministry/sample.json
+    expected_min_records: 1
+- source_key: sk_legislature_hansard
+  source_name: "Saskatchewan Legislative Assembly \u2013 Hansard"
+  jurisdiction: Saskatchewan, Canada
+  category: legislation
+  country: Canada
+  province_state: Saskatchewan
+  city: null
+  source_type: aggregate_stats
+  source_tier: official_government_statistics
+  public_record_authority: official_legislation
+  license: "Crown copyright \u2013 public access"
+  terms_url: https://www.legassembly.sk.ca
+  base_url: https://www.legassembly.sk.ca/legislative-business/debates-hansard/
+  allowed_domains:
+  - legassembly.sk.ca
+  - www.legassembly.sk.ca
+  - docs.legassembly.sk.ca
+  fetch_method: web_scrape
+  update_cadence: weekly
+  refresh_interval_minutes: 10080
+  parser: sk_legislature_html
+  creates:
+  - ReviewItem
+  enabled_default: false
+  auto_publish_enabled: false
+  requires_manual_review: true
+  public_publish_default: true
+  precision_level: province
+  priority: 4
+  source_class: machine_ingest
+  automation_status: machine_ready_disabled
+  parser_version: '1.0'
+  admin_notes: 'Validated 2026-05-06: Hansard index page at /legislative-business/debates-hansard/
+    has a table with Legislature/Session/Timeframe/SubjectIndex/SpeakerIndex. Index
+    links point to docs.legassembly.sk.ca.'
+  lifecycle_state: runnable_disabled
+  status_reason: Saskatchewan Legislature Hansard adapter ready; source awaiting operator
+    /enable.
+  operator_next_step: Confirm base_url is reachable and terms permit ingest, then
+    /enable via admin panel.
+  confidence_class: primary_official
+  retention_policy: indefinite
+  canonical_url: https://www.legassembly.sk.ca/legislative-business/debates-hansard/
+  evidence_required: true
+  terms_verified: '2026-05-06'
+  authentication_required: false
+  rate_limit_policy: polite_1rps
+  adapter:
+    parser: sk_legislature_html
+    mode: web_scrape
+    machine_ingest_enabled: false
+    requires_secret: false
+    rate_limit_rpm: 30
+    timeout_seconds: 30
+  test_fixtures:
+  - type: json
+    path: backend/app/tests/fixtures/sources/sk_legislature_hansard/sample.json
+    expected_min_records: 1
+  public_status:
+    public_publish_default: false
+    requires_manual_review: true
+    auto_publish_enabled: false
+- source_key: canada_open_data_crime
+  source_name: "Open Government Canada \u2013 Crime & Justice Datasets"
+  jurisdiction: Canada
+  category: crime_statistics
+  country: Canada
+  province_state: null
+  city: null
+  source_type: aggregate_stats
+  source_tier: official_government_statistics
+  public_record_authority: official_statistics
+  license: "Open Government Licence \u2013 Canada"
+  license_url: https://open.canada.ca/en/open-government-licence-canada
+  terms_url: https://open.canada.ca/en/open-government-licence-canada
+  base_url: https://open.canada.ca
+  allowed_domains:
+  - open.canada.ca
+  - search.open.canada.ca
+  fetch_method: api
+  update_cadence: annual
+  refresh_interval_minutes: 525600
+  parser: ckan_api
+  creates:
+  - CrimeIncident
+  enabled_default: false
+  auto_publish_enabled: false
+  requires_manual_review: true
+  public_publish_default: true
+  precision_level: national
+  priority: 3
+  source_class: portal_reference
+  automation_status: adapter_missing
+  lifecycle_state: portal_reference
+  status_reason: "Canada Open Government crime data \u2014 available via portal; adapter\
+    \ not yet written."
+  operator_next_step: Validate open.canada.ca API endpoint and write adapter.
+  confidence_class: primary_official
+  retention_policy: 7_years
+  canonical_url: https://open.canada.ca
+  evidence_required: false
+  terms_verified: false
+  authentication_required: false
+  rate_limit_policy: polite_1rps
+  test_fixtures:
+  - type: reference_only
+    path: null
+    expected_min_records: 0
+  public_status:
+    public_publish_default: false
+    requires_manual_review: true
+    auto_publish_enabled: false
+- source_key: rcmp_sk_news
+  source_name: "RCMP Saskatchewan \u2013 News Releases"
+  jurisdiction: Saskatchewan, Canada
+  category: news_releases
+  country: Canada
+  province_state: Saskatchewan
+  city: null
+  source_type: news_monitor
+  source_tier: news_only_context
+  public_record_authority: news_context
+  license: all_rights_reserved
+  terms_url: https://www.rcmp-grc.gc.ca/terms-modalites-eng.htm
+  base_url: https://www.rcmp-grc.gc.ca
+  allowed_domains:
+  - rcmp-grc.gc.ca
+  - www.rcmp-grc.gc.ca
+  fetch_method: web_monitor
+  update_cadence: daily
+  refresh_interval_minutes: 1440
+  parser: crawlee_police_release
+  creates:
+  - ReviewItem
+  enabled_default: false
+  auto_publish_enabled: false
+  requires_manual_review: true
+  public_publish_default: false
+  precision_level: city_centroid
+  priority: 3
+  source_class: disabled_stub
+  automation_status: adapter_missing
+  admin_notes: crawlee_police_release adapter not yet implemented; reclassified from
+    machine_ingest pending real adapter.
+  lifecycle_state: disabled_stub
+  status_reason: "RCMP Saskatchewan news releases \u2014 stub only; no scraper adapter\
+    \ written."
+  operator_next_step: Evaluate whether a scraper is required or remove this stub.
+  confidence_class: tertiary
+  retention_policy: rolling_90_days
+  canonical_url: https://www.rcmp-grc.gc.ca
+  evidence_required: false
+  terms_verified: false
+  authentication_required: false
+  rate_limit_policy: polite_1rps
+  test_fixtures:
+  - type: json
+    path: backend/app/tests/fixtures/sources/rcmp_sk_news/sample.json
+    expected_min_records: 1
+- source_key: canada_justice_laws
+  source_name: "Department of Justice Canada \u2013 Justice Laws Website (Deprecated\
+    \ Alias)"
+  jurisdiction: Canada
+  category: legislation
+  country: Canada
+  province_state: null
+  city: null
+  source_type: aggregate_stats
+  source_tier: official_government_statistics
+  public_record_authority: official_legislation
+  license: "Open Government Licence \u2013 Canada"
+  license_url: https://laws-lois.justice.gc.ca/eng/licence.html
+  terms_url: https://laws-lois.justice.gc.ca/eng/licence.html
+  base_url: https://laws-lois.justice.gc.ca/eng/XML/Legis.xml
+  allowed_domains:
+  - laws-lois.justice.gc.ca
+  - lois-laws.justice.gc.ca
+  fetch_method: xml
+  update_cadence: monthly
+  refresh_interval_minutes: 44640
+  parser: null
+  creates: []
+  enabled_default: false
+  auto_publish_enabled: false
+  requires_manual_review: true
+  public_publish_default: false
+  precision_level: national
+  priority: 4
+  source_class: disabled_stub
+  automation_status: disabled_stub
+  parser_version: null
+  config_json: '{"canonical_source_key":"justice_canada_laws_xml","deprecated":true}'
+  admin_notes: Deprecated alias entry. Use justice_canada_laws_xml for machine ingestion.
+    This key is retained for compatibility/migration only and must not be run.
+  lifecycle_state: deprecated
+  canonical_replacement_key: justice_canada_laws_xml
+  status_reason: Legacy alias for justice_canada_laws_xml. The XML feed is the canonical
+    source; this disabled_stub entry is retired.
+  operator_next_step: Remove all references to canada_justice_laws and use justice_canada_laws_xml
+    instead.
+  confidence_class: primary_official
+  retention_policy: 7_years
+  canonical_url: https://laws-lois.justice.gc.ca/eng/XML/Legis.xml
+  evidence_required: false
+  terms_verified: false
+  authentication_required: false
+  rate_limit_policy: unknown
+  test_fixtures:
+  - type: json
+    path: backend/app/tests/fixtures/sources/canada_justice_laws/sample.json
+    expected_min_records: 1
+  deprecation_policy:
+    status: deprecated
+    replacement_source_key: justice_canada_laws_xml
+    reason: replaced_by_canonical_source
+    removal_allowed_after: null
+- source_key: saskatoon_open_data_portal
+  source_name: "City of Saskatoon \u2013 Open Data Portal"
+  jurisdiction: Saskatoon, Saskatchewan, Canada
+  category: city_open_data
+  country: Canada
+  province_state: Saskatchewan
+  city: Saskatoon
+  source_type: aggregate_stats
+  source_tier: official_government_statistics
+  public_record_authority: official_open_data
+  license: "Open Government Licence \u2013 City of Saskatoon"
+  license_url: https://opendata.saskatoon.ca/licence
+  terms_url: https://opendata.saskatoon.ca/licence
+  base_url: https://opendata.saskatoon.ca
+  allowed_domains:
+  - opendata.saskatoon.ca
+  fetch_method: api
+  update_cadence: monthly
+  refresh_interval_minutes: 44640
+  parser: ckan_api
+  creates:
+  - ReviewItem
+  enabled_default: false
+  auto_publish_enabled: false
+  requires_manual_review: true
+  public_publish_default: false
+  precision_level: city_centroid
+  priority: 3
+  source_class: portal_reference
+  automation_status: adapter_missing
+  lifecycle_state: portal_reference
+  status_reason: "Saskatoon Open Data general portal \u2014 umbrella entry for datasets\
+    \ not yet given their own source_key."
+  operator_next_step: Prefer specific source_key entries per dataset.
+  confidence_class: primary_official
+  retention_policy: 7_years
+  canonical_url: https://opendata.saskatoon.ca
+  evidence_required: false
+  terms_verified: false
+  authentication_required: false
+  rate_limit_policy: polite_1rps
+  test_fixtures:
+  - type: reference_only
+    path: null
+    expected_min_records: 0
+- source_key: justice_canada_laws_xml_repo
+  source_name: Justice Canada Laws XML GitHub Repository (Fixtures)
+  jurisdiction: Canada
+  category: reference
+  country: Canada
+  province_state: null
+  city: null
+  source_type: reference_repository
+  source_tier: reference_only
+  public_record_authority: reference_only
+  license: Crown Copyright
+  license_url: https://github.com/justicecanada/laws-lois-xml/blob/main/LICENSE.md
+  terms_url: https://github.com/justicecanada/laws-lois-xml
+  base_url: https://github.com/justicecanada/laws-lois-xml
+  allowed_domains:
+  - github.com
+  fetch_method: git_clone
+  update_cadence: monthly
+  refresh_interval_minutes: 43200
+  parser: null
+  creates: []
+  enabled_default: false
+  auto_publish_enabled: false
+  requires_manual_review: true
+  public_publish_default: false
+  precision_level: reference
+  priority: 0
+  source_class: manual_reference
+  automation_status: adapter_missing
+  parser_version: null
+  config_json: '{"use_for": ["parser_fixtures", "regression_tests", "schema_examples"]}'
+  admin_notes: 'Reference only. Use for: parser fixtures (eng/fra law examples), regression
+    tests, Act/Regulation structure examples, XSLT reference. Do NOT use as operational
+    source. Operational source is live https://laws-lois.justice.gc.ca/eng/XML/Legis.xml'
+  lifecycle_state: manual_reference
+  status_reason: "GitHub mirror of justice.canada.ca XML laws \u2014 human reference\
+    \ only; not an ingestable live feed."
+  operator_next_step: Use justice_canada_laws_xml as the live ingest source. This
+    entry is for schema and DTD reference only.
+  confidence_class: reference_only
+  retention_policy: reference_only
+  canonical_url: https://github.com/justicecanada/laws-lois-xml
+  evidence_required: false
+  terms_verified: false
+  authentication_required: false
+  rate_limit_policy: reference_only
+  test_fixtures:
+  - type: reference_only
+    path: null
+    expected_min_records: 0
+- source_key: justice_canada_lims_xml_dtd
+  source_name: Justice Canada LIMS XML DTD (Schema Validation)
+  jurisdiction: Canada
+  category: reference
+  country: Canada
+  province_state: null
+  city: null
+  source_type: schema_reference
+  source_tier: reference_only
+  public_record_authority: reference_only
+  license: Crown Copyright
+  license_url: https://github.com/justicecanada/lims-xml-dtd/blob/main/LICENSE.md
+  terms_url: https://github.com/justicecanada/lims-xml-dtd
+  base_url: https://github.com/justicecanada/lims-xml-dtd
+  allowed_domains:
+  - github.com
+  fetch_method: git_clone
+  update_cadence: monthly
+  refresh_interval_minutes: 43200
+  parser: null
+  creates: []
+  enabled_default: false
+  auto_publish_enabled: false
+  requires_manual_review: true
+  public_publish_default: false
+  precision_level: reference
+  priority: 0
+  source_class: manual_reference
+  automation_status: adapter_missing
+  parser_version: null
+  config_json: '{"use_for": ["xml_validation", "parser_contract_tests", "schema_drift_detection"]}'
+  admin_notes: 'Reference only. DTD/schema definitions for Acts, Regulations, Bills,
+    Constitution. Use for: XML validation, parser contract tests, schema drift detection.
+    Fail closed if required elements disappear (Identification, ShortTitle, Body,
+    Section, Label, Text, lims:id, lims:current-date).'
+  lifecycle_state: manual_reference
+  status_reason: "XML DTD specification for Justice Canada LIMS format \u2014 reference\
+    \ documentation only."
+  operator_next_step: Keep as a documentation reference; not a data source.
+  confidence_class: reference_only
+  retention_policy: reference_only
+  canonical_url: https://github.com/justicecanada/lims-xml-dtd
+  evidence_required: false
+  terms_verified: false
+  authentication_required: false
+  rate_limit_policy: reference_only
+  test_fixtures:
+  - type: reference_only
+    path: null
+    expected_min_records: 0
+- source_key: justice_canada_otto_reference
+  source_name: Justice Canada Otto AI Legal Tools (Architecture Reference)
+  jurisdiction: Canada
+  category: reference
+  country: Canada
+  province_state: null
+  city: null
+  source_type: architecture_reference
+  source_tier: reference_only
+  public_record_authority: reference_only
+  license: AGPL-3.0
+  license_url: https://github.com/justicecanada/otto/blob/main/LICENSE
+  terms_url: https://github.com/justicecanada/otto
+  base_url: https://github.com/justicecanada/otto
+  allowed_domains:
+  - github.com
+  fetch_method: reference_only
+  update_cadence: never
+  refresh_interval_minutes: null
+  parser: null
+  creates: []
+  enabled_default: false
+  auto_publish_enabled: false
+  requires_manual_review: true
+  public_publish_default: false
+  precision_level: reference
+  priority: 0
+  source_class: manual_reference
+  automation_status: adapter_missing
+  parser_version: null
+  config_json: '{"use_for": ["ux_reference", "legal_ai_workflow_reference", "dashboard_reference"],
+    "runtime_import_allowed": false}'
+  admin_notes: 'Architecture reference only. AGPL-3.0 licensed. Use for: UX ideas
+    (legal research interface), legal AI workflow ideas, document analysis patterns,
+    admin dashboard concepts, Django/Celery background task patterns. DO NOT import
+    Otto runtime code. DO NOT copy AGPL code into FastAPI/Next app. Reference only.'
+  lifecycle_state: manual_reference
+  status_reason: "Otto XML processing reference \u2014 internal Justice Canada tooling\
+    \ documentation."
+  operator_next_step: Keep as a documentation reference; not a data source.
+  confidence_class: reference_only
+  retention_policy: reference_only
+  canonical_url: https://github.com/justicecanada/otto
+  evidence_required: false
+  terms_verified: false
+  authentication_required: false
+  rate_limit_policy: reference_only
+  test_fixtures:
+  - type: reference_only
+    path: null
+    expected_min_records: 0

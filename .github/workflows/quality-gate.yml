@@ -1,0 +1,249 @@
+name: Quality Gate
+
+on:
+  push:
+    branches:
+      - main
+      - master
+  pull_request:
+    branches:
+      - main
+      - master
+  workflow_dispatch: # Allow this workflow to be called by other workflows (azure-deploy.yml)
+
+  workflow_call:
+
+permissions:
+  contents: read
+
+jobs:
+  quality-gate:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+
+      - name: Install uv
+        uses: astral-sh/setup-uv@v4
+        with:
+          version: "latest"
+
+      - name: Install backend dependencies
+        working-directory: ./backend
+        run: |
+          uv venv
+          source .venv/bin/activate
+          uv pip install -e ".[test]"
+
+      - name: Backend compile check
+        working-directory: ./backend
+        run: |
+          source .venv/bin/activate
+          PYTHONDONTWRITEBYTECODE=1 python -m compileall -q app
+
+      - name: Backend Alembic migration test (SQLite)
+        working-directory: ./backend
+        run: |
+          source .venv/bin/activate
+          JTA_DATABASE_URL=sqlite:///./test_migration.db python -m alembic upgrade head
+          rm -f test_migration.db
+
+      - name: Check single Alembic head
+        working-directory: ./backend
+        run: |
+          source .venv/bin/activate
+          count=$(JTA_DATABASE_URL=sqlite:///./test_migration_heads.db python -m alembic heads 2>/dev/null | grep -c '(head)' || echo 0)
+          [ "$count" -eq 1 ] || { echo "ERROR: expected 1 Alembic head, got $count"; exit 1; }
+          rm -f test_migration_heads.db
+
+      - name: Backend tests
+        working-directory: ./backend
+        run: |
+          source .venv/bin/activate
+          python -m pytest -q
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: "20"
+          cache: "npm"
+          cache-dependency-path: ./frontend/package-lock.json
+
+      - name: Frontend Node 20 gate
+        run: |
+          source ./backend/.venv/bin/activate
+          NODE_MINOR=$(node -p "process.versions.node.split('.')[1]")
+          python scripts/check_frontend_node_gate.py --expected-major 20 --expected-minor "$NODE_MINOR"
+
+      - name: Install frontend dependencies
+        working-directory: ./frontend
+        run: npm ci
+
+      - name: Frontend lint
+        working-directory: ./frontend
+        run: npm run lint
+
+      - name: Frontend typecheck
+        working-directory: ./frontend
+        run: npm run typecheck
+
+      - name: Frontend contract tests
+        working-directory: ./frontend
+        run: npm run test:contracts
+
+      - name: Frontend build
+        working-directory: ./frontend
+        run: npm run build
+
+      - name: Guard — no committed generated files
+        run: |
+          source ./backend/.venv/bin/activate
+          python scripts/check_no_generated_files.py --root .
+
+      - name: Guard — path hygiene
+        run: |
+          source ./backend/.venv/bin/activate
+          python scripts/check_path_hygiene.py --root .
+
+      - name: Check no committed bytecode
+        run: |
+          chmod +x scripts/check_no_pyc.sh
+          ./scripts/check_no_pyc.sh
+
+      - name: Guard — truth-claim drift
+        run: |
+          source ./backend/.venv/bin/activate
+          python scripts/check_truth_claims.py --root .
+
+      - name: Check admin token not leaked into frontend components
+        run: |
+          LEAKED=$(grep -rl "JTA_ADMIN_TOKEN" \
+            frontend/components/ \
+            frontend/lib/ \
+            2>/dev/null | wc -l | tr -d ' ')
+          if [ "$LEAKED" -eq 0 ]; then
+            echo "✓ JTA_ADMIN_TOKEN not found in frontend/components/ or frontend/lib/"
+          else
+            echo "ERROR: JTA_ADMIN_TOKEN leaked into frontend non-route files (${LEAKED} file(s))"
+            grep -rl "JTA_ADMIN_TOKEN" frontend/components/ frontend/lib/ 2>/dev/null
+            exit 1
+          fi
+
+      - name: Validate source YAML definitions
+        run: |
+          source ./backend/.venv/bin/activate
+          python scripts/validate_workflows.py
+
+      - name: Guard — no hardcoded source keys
+        run: |
+          source ./backend/.venv/bin/activate
+          python scripts/check_source_keys.py --root backend/app --repo-root .
+
+      - name: Guard — no hardcoded status literals
+        run: |
+          source ./backend/.venv/bin/activate
+          python scripts/check_statuses.py --root backend/app
+
+      - name: Guard — mutation route-count vs RBAC matrix coverage
+        run: |
+          source ./backend/.venv/bin/activate
+          python scripts/check_mutation_matrix_coverage.py
+
+      - name: Guard — source registry docs drift
+        run: |
+          source ./backend/.venv/bin/activate
+          python scripts/check_source_registry_docs.py
+
+      - name: Guard — no direct ingestion network clients
+        run: |
+          source ./backend/.venv/bin/activate
+          PYTHONDONTWRITEBYTECODE=1 python backend/scripts/check_no_direct_ingestion_network_clients.py
+
+      - name: Guard — repo boundary enforcement
+        run: |
+          source ./backend/.venv/bin/activate
+          python backend/scripts/check_repo_boundaries.py
+
+      - name: Guard — runtime boundary validator
+        run: |
+          source ./backend/.venv/bin/activate
+          python scripts/validate_runtime_boundaries.py
+
+      - name: Quality Gate Summary
+        if: always()
+        run: |
+          echo "========================================"
+          echo "Quality Gate Complete"
+          echo "========================================"
+          echo "Backend: compile | migrations | tests"
+          echo "Frontend: lint | typecheck | build"
+          echo ""
+          echo "Check individual step logs above for results"
+
+      - name: Run canonical release gate
+        if: always()
+        run: |
+          source ./backend/.venv/bin/activate
+          python scripts/release_gate.py
+
+      - name: Check proof manifest required logs
+        if: always()
+        run: |
+          source ./backend/.venv/bin/activate
+          python scripts/check_proof_manifest.py
+
+      - name: Check canonical proof consistency
+        if: always()
+        run: |
+          source ./backend/.venv/bin/activate
+          python scripts/check_proof_consistency.py
+
+      - name: Check single proof authority
+        if: always()
+        run: |
+          source ./backend/.venv/bin/activate
+          python scripts/check_single_proof_authority.py
+
+      - name: Verify status consistency
+        if: always()
+        run: |
+          source ./backend/.venv/bin/activate
+          python scripts/verify_status_consistency.py
+
+      - name: Check duplicate docs
+        if: always()
+        run: |
+          source ./backend/.venv/bin/activate
+          python scripts/check_duplicate_docs.py
+
+      - name: Verify canonical proof artifacts
+        if: always()
+        run: |
+          test -f artifacts/proof/current/proof_manifest.json
+          test -f artifacts/proof/current/release_gate.json
+          test -f artifacts/proof/current/release_readiness.md
+          test -f artifacts/proof/current/archive_validation.log
+
+      - name: Upload proof artifacts
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: proof-current
+          path: |
+            artifacts/proof/current/**
+          retention-days: 30
+
+      - name: Upload test failure artifacts
+        if: failure()
+        uses: actions/upload-artifact@v4
+        with:
+          name: test-failure-logs
+          path: |
+            backend/.pytest_cache/
+            backend/test_migration*.db
+          retention-days: 7

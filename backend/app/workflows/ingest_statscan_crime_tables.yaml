@@ -1,0 +1,155 @@
+# Workflow for ingesting Statistics Canada crime tables
+#
+# This is a safe, official source workflow that fetches structured statistical data
+# from Statistics Canada's official data portal. It uses only safe, registered
+# task types and does not involve any shell execution or arbitrary code.
+#
+# Source: https://www150.statcan.gc.ca/n1/en/type/data
+# Privacy Risk: Low (official government data, aggregated statistics)
+# Data Type: Statistical/Crime Data
+
+name: ingest_statscan_crime_tables
+kind: ingestion
+enabled: true
+
+# Schedule: weekly on Sundays at 3 AM UTC
+schedule: "0 3 * * 0"
+
+# Geographic scope
+jurisdiction: "federal"
+province: null
+country: "Canada"
+
+# Source configuration
+source:
+  source_key: "statscan_crime_tables"
+  source_type: "official_government_statistics"
+  lifecycle_state: "active"
+  automation_status: "automated"
+
+# Workflow steps - only safe, registered task types allowed
+steps:
+  - id: fetch_crime_data
+    name: Fetch Crime Statistics
+    uses: fetch_api
+    with:
+      url: "https://www150.statcan.gc.ca/n1/en/type/data"
+      headers:
+        User-Agent: "JudgeAtlasX/1.0 (legal-data-ingestion)"
+      timeout_seconds: 300
+      retry_max: 3
+      retry_delay_seconds: 60
+
+  - id: create_evidence_snapshot
+    name: Create Evidence Snapshot
+    uses: evidence_snapshot
+    with:
+      preserve_raw: true
+      store_in_vault: true
+
+  - id: parse_statscan_table
+    name: Parse Statistics Table
+    uses: parse_statscan_table
+    with:
+      parser_version: "1.0"
+      extract_metadata: true
+      normalize_geography: true
+
+  - id: resolve_entities
+    name: Resolve Geographic Entities
+    uses: resolve_entities
+    with:
+      entity_types: ["province", "city", "census_division"]
+      dedupe_by_name: true
+
+  - id: extract_claims
+    name: Extract Statistical Claims
+    uses: extract_claims
+    with:
+      claim_types: ["crime_rate", "incident_count", "trend"]
+      confidence_threshold: 0.8
+
+  - id: dedupe_events
+    name: Deduplicate Events
+    uses: dedupe_events
+    with:
+      dedupe_fields: ["geography", "year", "crime_type"]
+      fuzzy_match_threshold: 0.95
+
+  - id: contradiction_check
+    name: Check Contradictions
+    uses: contradiction_check
+    with:
+      check_against: ["official_crime_reports", "police_data"]
+      severity_threshold: "low"
+
+  - id: confidence_score
+    name: Score Confidence
+    uses: confidence_score
+    with:
+      model: "official_statistics_v1"
+      min_confidence: 0.7
+
+  - id: legal_correlation
+    name: Legal Correlation
+    uses: legal_correlation
+    with:
+      correlation_types: ["crime_trend_legislation_overlap"]
+      confidence_threshold: 0.6
+
+  - id: enqueue_review
+    name: Enqueue for Review
+    uses: enqueue_review
+    with:
+      review_queue: "statistics"
+      auto_approve_threshold: 0.95
+      require_manual_review: false
+
+  - id: publish_map_layer
+    name: Publish Map Layer
+    uses: publish_map_layer
+    with:
+      layer_type: "statistical"
+      publish_status: "public_safe"
+      require_approval: true
+
+# Review gate configuration
+review_gate:
+  required: true
+  queue: "statistics"
+  auto_approve_confidence: 0.97
+  manual_review_confidence: 0.8
+  block_below_confidence: 0.6
+
+# Output configuration
+outputs:
+  artifacts:
+    - name: raw_statscan_data
+      path: "raw/statscan_data.json"
+      preserve: true
+    - name: parsed_statistics
+      path: "parsed/statistics.json"
+      preserve: true
+    - name: extracted_claims
+      path: "claims/claims.json"
+      preserve: true
+    - name: contradictions_report
+      path: "reports/contradictions.json"
+      preserve: true
+
+# Error handling
+on_error:
+  retry_steps: ["fetch_crime_data", "parse_statscan_table", "extract_claims"]
+  max_retries: 3
+  retry_delay_seconds: 300
+  notify_on_failure: true
+  dead_letter_queue: true
+
+# Metadata
+metadata:
+  version: "1.0"
+  created_at: "2026-05-20"
+  author: "Judge AtlasX Team"
+  description: "Ingest Statistics Canada crime statistics tables"
+  risk_level: "low"
+  privacy_impact: "minimal"

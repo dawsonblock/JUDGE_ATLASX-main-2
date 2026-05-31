@@ -1,0 +1,41 @@
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 17
+VisualStudioVersion = 17.5.2.0
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "CLI-Anything-main", "CLI-Anything-main", "{B24256ED-AC9C-9A4E-66EC-6025A00304CA}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "slay_the_spire_ii", "slay_the_spire_ii", "{C7A154DF-8411-92BB-C1D1-A7C195658E24}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "agent-harness", "agent-harness", "{944CED6A-2891-5C17-D90F-6E77ECEEBFDA}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "bridge", "bridge", "{1378AC1E-1C73-9283-6181-02483EB39B49}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "plugin", "plugin", "{BB130E98-440C-45A2-1BBA-719F67DF6FEF}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "STS2_Bridge", "CLI-Anything-main\slay_the_spire_ii\agent-harness\bridge\plugin\STS2_Bridge.csproj", "{48DEC83C-CDA9-A494-B705-ADE7BF8DADBF}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{48DEC83C-CDA9-A494-B705-ADE7BF8DADBF}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{48DEC83C-CDA9-A494-B705-ADE7BF8DADBF}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{48DEC83C-CDA9-A494-B705-ADE7BF8DADBF}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{48DEC83C-CDA9-A494-B705-ADE7BF8DADBF}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{C7A154DF-8411-92BB-C1D1-A7C195658E24} = {B24256ED-AC9C-9A4E-66EC-6025A00304CA}
+		{944CED6A-2891-5C17-D90F-6E77ECEEBFDA} = {C7A154DF-8411-92BB-C1D1-A7C195658E24}
+		{1378AC1E-1C73-9283-6181-02483EB39B49} = {944CED6A-2891-5C17-D90F-6E77ECEEBFDA}
+		{BB130E98-440C-45A2-1BBA-719F67DF6FEF} = {1378AC1E-1C73-9283-6181-02483EB39B49}
+		{48DEC83C-CDA9-A494-B705-ADE7BF8DADBF} = {BB130E98-440C-45A2-1BBA-719F67DF6FEF}
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {A92F1A19-77F4-4823-A91E-A6AECD62C9A8}
+	EndGlobalSection
+EndGlobal

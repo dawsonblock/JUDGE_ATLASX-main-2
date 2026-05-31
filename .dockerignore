@@ -1,0 +1,106 @@
+# ---- Non-shipping reference trees (NEVER in any image) ----------------------
+research/
+Research/
+external/
+external_reference/
+
+# ---- Python artefacts --------------------------------------------------------
+__pycache__/
+*.py[cod]
+*.pyo
+*.so
+*.egg-info/
+.mypy_cache/
+.ruff_cache/
+
+# ---- Testing / lint caches ---------------------------------------------------
+.pytest_cache/
+.nox/
+.tox/
+.validation_logs/
+
+# ---- Virtual environments ----------------------------------------------------
+.venv/
+backend/.venv/
+venv/
+env/
+
+# ---- Secrets and local config ------------------------------------------------
+.env
+.env.local
+.env.production
+.env.development
+*.pem
+*.key
+*.p12
+*.pfx
+*.crt
+id_rsa
+id_ed25519
+
+# ---- Node / frontend build artefacts ----------------------------------------
+node_modules/
+frontend/node_modules/
+frontend/.next/
+frontend/out/
+frontend/dist/
+frontend/build/
+.next/
+out/
+dist/
+build/
+release/
+*.tsbuildinfo
+
+# ---- Logs --------------------------------------------------------------------
+*.log
+artifacts/proof/*.log
+artifacts/proof/current/*.log
+logs/
+
+# ---- Release archives --------------------------------------------------------
+*.zip
+*.tar
+*.tar.gz
+
+# ---- IDE / OS ----------------------------------------------------------------
+.idea/
+.vscode/
+*.swp
+*.swo
+.DS_Store
+Thumbs.db
+
+# ---- Testing / coverage ------------------------------------------------------
+.coverage
+htmlcov/
+
+# ---- Database and local data stores ------------------------------------------
+*.db
+*.sqlite
+*.sqlite3
+*.dump
+evidence_store/
+data/local/
+tmp/
+temp/
+
+# ---- Proof archive (historical; not for images) -----------------------------
+artifacts/history/
+artifacts/proof/backend/
+artifacts/proof/frontend/
+artifacts/proof/archive/
+artifacts/proof/history/
+artifacts/proof/latest/
+proof/latest/
+
+# ---- Documentation (not needed in app images) --------------------------------
+docs/
+
+# ---- Git / CI ----------------------------------------------------------------
+.git/
+.gitignore
+.github/
+
+# ---- Source docs -------------------------------------------------------------
+*.md

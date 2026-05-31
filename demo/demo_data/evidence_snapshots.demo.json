@@ -1,0 +1,22 @@
+[
+  {
+    "snapshot_key": "DEMO-SNAP-001",
+    "source_key": "demo_court_records",
+    "source_url": "https://demo.local/court/DEMO-2025-CR-0001/order",
+    "fetched_at": "2025-01-16T12:00:00+00:00",
+    "http_status": 200,
+    "content_type": "text/plain",
+    "raw_content": "DEMO public reviewed order content fixture.",
+    "extracted_text": "Public reviewed sentencing order fixture text."
+  },
+  {
+    "snapshot_key": "DEMO-SNAP-002",
+    "source_key": "demo_court_records",
+    "source_url": "https://demo.local/court/DEMO-2025-CR-0002/motion",
+    "fetched_at": "2025-01-21T12:00:00+00:00",
+    "http_status": 200,
+    "content_type": "text/plain",
+    "raw_content": "DEMO private pending motion content fixture.",
+    "extracted_text": "Pending review detention motion fixture text."
+  }
+]

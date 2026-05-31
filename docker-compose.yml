@@ -1,0 +1,83 @@
+services:
+  db:
+    image: postgis/postgis:16-3.4
+    environment:
+      POSTGRES_DB: judgetracker
+      POSTGRES_USER: judgetracker
+      POSTGRES_PASSWORD: judgetracker
+    ports:
+      - "${JTA_DB_PORT:-5432}:5432"
+    volumes:
+      - postgres-data:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U judgetracker -d judgetracker"]
+      interval: 5s
+      timeout: 5s
+      retries: 20
+
+  redis:
+    image: redis:7-alpine
+    ports:
+      - "${JTA_REDIS_PORT:-6379}:6379"
+
+  minio:
+    image: minio/minio:latest
+    command: server /data --console-address ":9001"
+    environment:
+      MINIO_ROOT_USER: minioadmin
+      MINIO_ROOT_PASSWORD: minioadmin
+    ports:
+      - "${JTA_MINIO_PORT:-9000}:9000"
+      - "${JTA_MINIO_CONSOLE_PORT:-9001}:9001"
+    volumes:
+      - minio-data:/data
+
+  backend:
+    build:
+      context: ./backend
+      dockerfile: Dockerfile.backend
+    environment:
+      JTA_DATABASE_URL: postgresql+psycopg://judgetracker:judgetracker@db:5432/judgetracker
+      JTA_COURTLISTENER_API_TOKEN: ${COURTLISTENER_API_TOKEN:-}
+      JTA_COURTLISTENER_BASE_URL: ${COURTLISTENER_BASE_URL:-https://www.courtlistener.com/api/rest/v4}
+      JTA_CORS_ORIGINS: http://localhost:3000
+      JTA_AUTO_SEED: "true"
+      JTA_APP_ENV: development
+      JTA_ENABLE_ADMIN_IMPORTS: ${JTA_ENABLE_ADMIN_IMPORTS:-false}
+      JTA_ENABLE_ADMIN_REVIEW: ${JTA_ENABLE_ADMIN_REVIEW:-false}
+      JTA_ADMIN_TOKEN: ${JTA_ADMIN_TOKEN:-}
+      JTA_ENABLE_LEGACY_ADMIN_TOKEN: "false" # Shared admin token auth disabled; use JWT authentication
+      JTA_ADMIN_REVIEW_TOKEN: ${JTA_ADMIN_REVIEW_TOKEN:-}
+      JTA_RATE_LIMIT_BACKEND: redis
+      JTA_REDIS_URL: redis://redis:6379/0
+      JTA_STORAGE_BACKEND: minio
+      JTA_STORAGE_MINIO_ENDPOINT: minio:9000
+      JTA_STORAGE_MINIO_ACCESS_KEY: minioadmin
+      JTA_STORAGE_MINIO_SECRET_KEY: minioadmin
+      JTA_STORAGE_MINIO_BUCKET: judge-atlasx
+      JTA_STORAGE_MINIO_SECURE: "false"
+    ports:
+      - "${JTA_BACKEND_PORT:-8000}:8000"
+    depends_on:
+      db:
+        condition: service_healthy
+      redis:
+        condition: service_started
+      minio:
+        condition: service_started
+
+  frontend:
+    build:
+      context: ./frontend
+      dockerfile: Dockerfile
+    environment:
+      NEXT_PUBLIC_API_BASE_URL: http://localhost:8000
+      BACKEND_INTERNAL_URL: http://backend:8000
+    ports:
+      - "${JTA_FRONTEND_PORT:-3000}:3000"
+    depends_on:
+      - backend
+
+volumes:
+  postgres-data:
+  minio-data:

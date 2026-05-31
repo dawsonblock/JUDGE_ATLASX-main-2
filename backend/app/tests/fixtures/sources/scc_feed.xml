@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<rss version="2.0" xmlns:decision="http://lexum.com/decision/">
+  <channel>
+    <title>Supreme Court Judgments</title>
+    <link>https://decisions.scc-csc.ca/scc-csc/scc-csc/en/rss.do</link>
+    <description>Recently published and updated (translated, amended or corrected) documents</description>
+    <language>en</language>
+    <item>
+      <title>
+                    Quebec (Attorney General) v. Lalande
+                            - 2026 SCC 13
+                    - 2026-05-01
+      </title>
+      <link>https://decisions.scc-csc.ca/scc-csc/scc-csc/en/item/21476/index.do</link>
+      <description>Constitutional reference regarding federal carbon pricing legislation.</description>
+      <date>2026-05-01</date>
+    </item>
+    <item>
+      <title>
+                    R. v. Sharma
+                            - 2022 SCC 39
+                    - 2022-11-04
+      </title>
+      <link>https://decisions.scc-csc.ca/scc-csc/scc-csc/en/item/19553/index.do</link>
+      <description>Criminal law decision regarding conditional sentence orders.</description>
+      <date>2022-11-04</date>
+    </item>
+    <item>
+      <title>
+                    R. v. Beaver
+                            - 2022 SCC 54
+                    - 2022-12-09
+      </title>
+      <link>https://decisions.scc-csc.ca/scc-csc/scc-csc/en/item/19621/index.do</link>
+      <description>Criminal law decision regarding search and seizure.</description>
+      <date>2022-12-09</date>
+    </item>
+  </channel>
+</rss>

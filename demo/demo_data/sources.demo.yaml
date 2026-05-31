@@ -1,0 +1,33 @@
+sources:
+  - source_key: demo_court_records
+    source_name: DEMO Synthetic Court Record Feed
+    source_type: court_record
+    source_tier: court_record
+    country: US
+    province_state: DemoState
+    city: DemoCity
+    fetch_method: manual
+    update_cadence: manual
+    precision_level: city_centroid
+    auto_publish_enabled: false
+    requires_manual_review: true
+    is_active: false
+    enabled_default: false
+    public_record_authority: official_public_record
+    base_url: https://demo.local/court
+    allowed_domains: '["demo.local"]'
+    refresh_interval_minutes: 1440
+    parser: demo.manual
+    creates: '["event", "source_snapshot", "review_item"]'
+    public_publish_default: false
+    terms_url: https://demo.local/terms
+    source_class: portal_reference
+    parser_version: demo-v1
+    automation_status: disabled_by_default
+    jurisdiction: demo-jurisdiction
+    category: synthetic_demo
+    priority: 5
+    license: Demo Public Fixture
+    license_url: https://demo.local/license
+    config_json: '{"mode": "demo"}'
+    notes: Synthetic fixture source for local product demo only.

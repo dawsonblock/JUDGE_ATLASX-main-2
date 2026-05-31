@@ -1,0 +1,22 @@
+court_name,courtlistener_id,city,state_province,country,latitude,longitude,jurisdiction
+US District Court — Southern District of New York,nysd,New York,NY,United States,40.7143,-74.0060,Federal
+US District Court — Eastern District of New York,nyed,Brooklyn,NY,United States,40.6782,-73.9442,Federal
+US District Court — Northern District of Illinois,ilnd,Chicago,IL,United States,41.8781,-87.6298,Federal
+US District Court — Central District of California,cacd,Los Angeles,CA,United States,34.0522,-118.2437,Federal
+US District Court — Northern District of California,cand,San Francisco,CA,United States,37.7749,-122.4194,Federal
+US District Court — District of Columbia,dcd,Washington,DC,United States,38.9072,-77.0369,Federal
+US District Court — Eastern District of Michigan,mied,Detroit,MI,United States,42.3314,-83.0458,Federal
+US District Court — Western District of Texas,txwd,Austin,TX,United States,30.2672,-97.7431,Federal
+US District Court — District of Maryland,mdd,Baltimore,MD,United States,39.2904,-76.6122,Federal
+US District Court — Southern District of Florida,flsd,Miami,FL,United States,25.7617,-80.1918,Federal
+Ontario Superior Court of Justice,on_scj,Toronto,ON,Canada,43.6532,-79.3832,Provincial
+BC Supreme Court,bc_sc,Vancouver,BC,Canada,49.2827,-123.1207,Provincial
+Alberta Court of King's Bench,ab_ckb,Calgary,AB,Canada,51.0447,-114.0719,Provincial
+Manitoba Court of King's Bench,mb_ckb,Winnipeg,MB,Canada,49.8951,-97.1384,Provincial
+Quebec Superior Court,qc_sc,Montreal,QC,Canada,45.5017,-73.5673,Provincial
+Test Court for Provenance Courts,prov_test_courts,Test City,TX,United States,30.0000,-97.0000,Federal
+Test Court for Provenance People,prov_test_people,Test City,TX,United States,30.0001,-97.0001,Federal
+Test Court for Provenance Positions,prov_test_pos,Test City,TX,United States,30.0002,-97.0002,Federal
+Test Court for Provenance Dockets,prov_test_dock,Test City,TX,United States,30.0003,-97.0003,Federal
+Test Court for Provenance Clusters,prov_test_clus,Test City,TX,United States,30.0004,-97.0004,Federal
+Test Court for Provenance Opinions,prov_test_opin,Test City,TX,United States,30.0005,-97.0005,Federal

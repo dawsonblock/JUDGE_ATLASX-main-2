@@ -1,0 +1,14 @@
+Alembic Database Migrations
+
+To generate a new migration after model changes:
+    alembic revision --autogenerate -m "Description of changes"
+
+To apply migrations:
+    alembic upgrade head
+
+To downgrade:
+    alembic downgrade -1
+
+For development prototype only:
+    Base.metadata.create_all() is still used in local/test mode.
+    For production, use alembic upgrade head.
